@@ -1,8 +1,6 @@
 #include <iostream>
 
 #include "renderer.h"
-#include "utilities/logging.h"
-#include "utilities/sdl-helpers.h"
 
 uint32_t Renderer::VSYNC_Flag = 0UL;
 uint32_t Renderer::Hardware_Acceleration_Flag = 0UL;

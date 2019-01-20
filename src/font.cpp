@@ -1,7 +1,5 @@
 #include "font.h"
 
-#include "utilities/logging.h"
-
 Font::Font(const std::string& location, const uint32_t point_size) :
     m_font_pointer(nullptr)
 {

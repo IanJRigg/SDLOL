@@ -1,34 +1,33 @@
 #include "sdl-controller.h"
 
-#include "utilities/sdl-helpers.h"
-#include "utilities/logging.h"
-
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+
+#include <sdlol-exception.h>
 
 SDL_Controller::SDL_Controller()
 {
     if(SDL_Init(SDL_INIT_VIDEO) != 0L)
     {
-        LOG_ERROR("SDL could not initialize: " + SDL_ERROR());
+        throw SDLOL_Runtime_Exception("SDL could not initialize: " + std::string(SDL_GetError()));
     }
 
     if(SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1") == SDL_FALSE)
     {
-        LOG_ERROR("Unable to enable linear texture filtering.");
+        throw SDLOL_Runtime_Exception("Unable to enable linear texture filtering.");
     }
 
     // Initialize PNG loading
     if(IMG_Init(IMG_INIT_PNG) != IMG_INIT_PNG)
     {
-        LOG_ERROR("SDL_image could not initialize: " + SDL_ERROR());
+        throw SDLOL_Runtime_Exception("SDL_image could not initialize: " + std::string(SDL_GetError()));
     }
 
     // Initialize SDL_ttf
     if( TTF_Init() == -1 )
     {
-        LOG_ERROR("SDL_ttf could not initialize: " + TTF_ERROR());
+        throw SDLOL_Runtime_Exception("SDL_ttf could not initialize: " + std::string(TTF_GetError()));
     }
 }
 

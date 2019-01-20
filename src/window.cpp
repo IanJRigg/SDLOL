@@ -2,8 +2,6 @@
 #include <string>
 
 #include "window.h"
-#include "utilities/logging.h"
-#include "utilities/sdl-helpers.h"
 
 Window::Window()
 {

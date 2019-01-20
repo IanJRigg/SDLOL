@@ -10,6 +10,7 @@ set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/input.h
     ${CMAKE_CURRENT_SOURCE_DIR}/renderer.h
     ${CMAKE_CURRENT_SOURCE_DIR}/sdl-controller.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/sdlol-exception.h
     ${CMAKE_CURRENT_SOURCE_DIR}/surface.h
     ${CMAKE_CURRENT_SOURCE_DIR}/texture.h
     ${CMAKE_CURRENT_SOURCE_DIR}/window.h

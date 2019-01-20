@@ -3,9 +3,7 @@
 
 #include "texture.h"
 #include "surface.h"
-
-#include "utilities/logging.h"
-#include "utilities/sdl-helpers.h"
+#include "sdlol-exception.h"
 
 Texture::Texture(Renderer& renderer, const std::string& path) :
     m_texture_pointer(nullptr),
@@ -226,8 +224,7 @@ void Texture::initialize(const std::string& path)
     SDL_Surface* surface = IMG_Load( path.c_str() );
     if( surface == nullptr )
     {
-        LOG_ERROR("Error loading image, " + SDL_ERROR());
-        return;
+        throw SDLOL_Runtime_Exception("Error loading image, " + std::string(SDL_GetError()));
     }
 
     // Color key image
@@ -243,7 +240,7 @@ void Texture::initialize(const std::string& path)
     }
     else
     {
-        LOG_ERROR("Error creating texture, " + SDL_ERROR());
+        throw SDLOL_Runtime_Exception("Error creating texture, " + std::string(SDL_GetError()));
         m_height = 0UL;
         m_width  = 0UL;
     }
