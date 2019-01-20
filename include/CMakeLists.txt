@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 3.12)
+
+if(${CMAKE_VERSION} VERSION_LESS 3.12)
+    cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
+endif()
+
+set(HEADER_FILES
+    ${HEADER_FILES}
+    ${CMAKE_CURRENT_SOURCE_DIR}/font.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/input.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/renderer.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/sdl-controller.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/surface.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/texture.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/window.h
+    PARENT_SCOPE
+)
