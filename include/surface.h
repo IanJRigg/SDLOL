@@ -2,11 +2,13 @@
 #define SURFACE_H
 
 #include <SDL.h>
+#include <string>
 
 class Surface
 {
 public:
-    Surface();
+    Surface() = delete;
+    explicit Surface(const std::string& path);
     Surface(Surface& other);
     Surface(Surface&& other);
     virtual ~Surface();
@@ -14,8 +16,8 @@ public:
     Surface& operator=(Surface& other);
     Surface& operator=(Surface&& other);
 
-    // bool blit_surface(const Surface& other);
-    // bool load_bitmap();
+    bool blit(const Surface& other);
+    void load_bitmap(const std::string& path);
 
     // Accessors
     SDL_Surface* pointer() const;

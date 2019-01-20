@@ -1,9 +1,10 @@
 #include "surface.h"
+#include "sdlol-exception.h"
 
-Surface::Surface() :
+Surface::Surface(const std::string& path) :
     m_surface_pointer(nullptr)
 {
-
+    load_bitmap(path);
 }
 
 Surface::Surface(Surface& other) :
@@ -51,26 +52,28 @@ Surface& Surface::operator=(Surface&& other)
     return *this;
 }
 
-// bool Surface::load_BMP()
-// {
-//     SDL_Surface* temp = SDL_LoadBMP("test.bmp");
-//     bool success = false;
+bool Surface::blit(const Surface& other)
+{
+    return (SDL_BlitSurface(other.pointer(), nullptr, m_surface_pointer, nullptr) == 0L);
+}
 
-//     if(temp != nullptr)
-//     {
-//         success = this->blit_surface(temp);
-//     }
+void Surface::load_bitmap(const std::string& path)
+{
+    SDL_Surface* temp = SDL_LoadBMP(path.c_str());
 
-//     SDL_FreeSurface(temp);
-//     temp = nullptr;
+    if(temp == nullptr)
+    {
+        throw SDLOL_Runtime_Exception("File not found at: " + path);
+    }
 
-//     return success;
-// }
+    if(SDL_BlitSurface(temp, nullptr, m_surface_pointer, nullptr) == 0L)
+    {
+        throw SDLOL_Runtime_Exception("Unable to blit surface");
+    }
 
-// bool Surface::blit_surface(const Surface& other)
-// {
-//     retrun (SDL_BlitSurface(other.pointer(), nullptr, m_surface_pointer, nullptr) == 0L);
-// }
+    SDL_FreeSurface(temp);
+    temp = nullptr;
+}
 
 SDL_Surface* Surface::pointer() const
 {
