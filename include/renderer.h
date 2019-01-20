@@ -40,6 +40,8 @@ private:
     void deallocate();
     void nullify();
 
+    static constexpr int32_t FIRST_SUPPORTED_DRIVER = -1L;
+
     static uint32_t VSYNC_Flag;
     static uint32_t Hardware_Acceleration_Flag;
 
