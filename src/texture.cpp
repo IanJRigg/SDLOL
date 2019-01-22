@@ -26,59 +26,15 @@ Texture::Texture(Renderer& renderer,
     load_rendered_text(font, text, color);
 }
 
-Texture::Texture(Texture& other) :
-    m_texture_pointer(other.m_texture_pointer),
-    m_renderer(other.m_renderer),
-    m_height(other.m_height),
-    m_width(other.m_width)
-{
-    other.nullify();
-}
-
-Texture::Texture(Texture&& other) :
-    m_texture_pointer(other.m_texture_pointer),
-    m_renderer(other.m_renderer),
-    m_height(other.m_height),
-    m_width(other.m_width)
-{
-    other.nullify();
-}
-
 Texture::~Texture()
 {
-    deallocate();
-}
-
-Texture& Texture::operator=(Texture& other)
-{
-    if(this != &other)
+    if(m_texture_pointer != nullptr)
     {
-        deallocate();
-
-        m_texture_pointer = other.m_texture_pointer;
-        m_height = other.m_height;
-        m_width  = other.m_width;
-
-        other.nullify();
+        SDL_DestroyTexture(m_texture_pointer);
+        m_texture_pointer = nullptr;
+        m_height  = 0UL;
+        m_width   = 0UL;
     }
-
-    return *this;
-}
-
-Texture& Texture::operator=(Texture&& other)
-{
-    if(this != &other)
-    {
-        deallocate();
-
-        m_texture_pointer = other.m_texture_pointer;
-        m_height = other.m_height;
-        m_width  = other.m_width;
-
-        other.nullify();
-    }
-
-    return *this;
 }
 
 void Texture::render_at(const uint32_t x, const uint32_t y) const
@@ -153,44 +109,34 @@ void Texture::render_at(const uint32_t x,
                      flip);
 }
 
-void Texture::modulate_color(const SDL_Color& color) const
+bool Texture::set_color_modulation(const SDL_Color& color) const
 {
-    SDL_SetTextureColorMod(m_texture_pointer, color.r, color.b, color.g);
+    return (SDL_SetTextureColorMod(m_texture_pointer, color.r, color.b, color.g) == 0L);
 }
 
-void Texture::set_alpha(const uint8_t alpha)
+// Need to check for errors?
+SDL_Color Texture::color_modulation() const
 {
-    SDL_SetTextureAlphaMod(m_texture_pointer, alpha);
+    SDL_Color color = { 0U, 0U, 0U, 0U };
+
+    SDL_GetTextureColorMod(m_texture_pointer, &(color.r), &(color.g), &(color.b));
+
+    return color;
 }
 
-bool Texture::load_rendered_text(const Font& font,
-                                 const std::string& text,
-                                 const SDL_Color color)
+bool Texture::set_alpha_modulation(const uint8_t alpha) const
 {
-    deallocate();
+    return (SDL_SetTextureAlphaMod(m_texture_pointer, alpha) == 0L);
+}
 
-    //Render text surface
-    SDL_Surface* surface = TTF_RenderText_Solid(font.pointer(), text.c_str(), color);
-    if(surface == nullptr)
-    {
-        return false;
-    }
+// Need to check for errors?
+uint8_t Texture::alpha_modulation() const
+{
+    uint8_t alpha = 0U;
 
-    //Create texture from surface pixels
-    m_texture_pointer = SDL_CreateTextureFromSurface(m_renderer.pointer(), surface);
-    if(m_texture_pointer == nullptr)
-    {
-        return false;
-    }
+    SDL_GetTextureAlphaMod(m_texture_pointer, &alpha);
 
-    //Get image dimensions
-    m_width = surface->w;
-    m_height = surface->h;
-
-    //Get rid of old surface
-    SDL_FreeSurface(surface);
-
-    return true;
+    return alpha;
 }
 
 SDL_Texture* Texture::pointer() const
@@ -206,16 +152,6 @@ uint32_t Texture::height() const
 uint32_t Texture::width() const
 {
     return m_width;
-}
-
-bool Texture::is_valid() const
-{
-    return (m_texture_pointer != nullptr) && (m_height > 0UL) && (m_width > 0UL);
-}
-
-bool Texture::is_invalid() const
-{
-    return !is_valid();
 }
 
 void Texture::initialize(const std::string& path)
@@ -248,18 +184,30 @@ void Texture::initialize(const std::string& path)
     SDL_FreeSurface(surface);
 }
 
-void Texture::deallocate()
+bool Texture::load_rendered_text(const Font& font,
+                                 const std::string& text,
+                                 const SDL_Color color)
 {
-    if(m_texture_pointer != nullptr)
+    //Render text surface
+    SDL_Surface* surface = TTF_RenderText_Solid(font.pointer(), text.c_str(), color);
+    if(surface == nullptr)
     {
-        SDL_DestroyTexture(m_texture_pointer);
-        nullify();
+        return false;
     }
-}
 
-void Texture::nullify()
-{
-    m_texture_pointer = nullptr;
-    m_height  = 0UL;
-    m_width   = 0UL;
+    //Create texture from surface pixels
+    m_texture_pointer = SDL_CreateTextureFromSurface(m_renderer.pointer(), surface);
+    if(m_texture_pointer == nullptr)
+    {
+        return false;
+    }
+
+    //Get image dimensions
+    m_width = surface->w;
+    m_height = surface->h;
+
+    //Get rid of old surface
+    SDL_FreeSurface(surface);
+
+    return true;
 }

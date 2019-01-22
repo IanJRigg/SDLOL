@@ -9,24 +9,17 @@ class Font
 {
 public:
     Font() = delete;
-    Font(const std::string& location, const uint32_t point_size);
-    Font(Font& other);
-    Font(Font&& other);
-    virtual ~Font();
+    Font(const Font& other) = delete;
+    Font(Font&& other) noexcept = delete;
 
-    Font& operator=(Font& other);
-    Font& operator=(Font&& other);
+    Font& operator=(const Font& other) = delete;
+    Font& operator=(Font&& other) noexcept = delete;
+
+    Font(const std::string& location, const uint32_t point_size);
+    virtual ~Font();
 
     // Accessors
     TTF_Font* pointer() const;
-
-    // Utility Functions
-    bool is_valid() const;
-    bool is_invalid() const;
-
-private:
-    void deallocate();
-    void nullify();
 
 private:
     TTF_Font* m_font_pointer;

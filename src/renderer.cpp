@@ -5,63 +5,27 @@
 uint32_t Renderer::VSYNC_Flag = 0UL;
 uint32_t Renderer::Hardware_Acceleration_Flag = 0UL;
 
-Renderer::Renderer(const Window& window)
+Renderer::Renderer(const Window& window) :
+    m_renderer_pointer(nullptr),
+    m_options_mask(VSYNC_Flag | Hardware_Acceleration_Flag)
 {
-    uint32_t render_flags = VSYNC_Flag | Hardware_Acceleration_Flag;
-
     m_renderer_pointer = SDL_CreateRenderer(window.pointer(),
                                             FIRST_SUPPORTED_DRIVER,
-                                            render_flags);
-}
-
-Renderer::Renderer(Renderer& other) :
-    m_renderer_pointer(other.m_renderer_pointer)
-{
-    other.nullify();
-}
-
-Renderer::Renderer(Renderer&& other) :
-    m_renderer_pointer(other.m_renderer_pointer)
-{
-    other.nullify();
+                                            m_options_mask);
 }
 
 Renderer::~Renderer()
 {
-    deallocate();
-}
-
-Renderer& Renderer::operator=(Renderer& other)
-{
-    if(this != &other)
+    if(m_renderer_pointer != nullptr)
     {
-        deallocate();
-
-        m_renderer_pointer = other.m_renderer_pointer;
-
-        other.nullify();
+        SDL_DestroyRenderer(m_renderer_pointer);
+        m_renderer_pointer = nullptr;
     }
-
-    return *this;
 }
 
-Renderer& Renderer::operator=(Renderer&& other)
+bool Renderer::set_draw_color(const SDL_Color& color)
 {
-    if(this != &other)
-    {
-        deallocate();
-
-        m_renderer_pointer = other.m_renderer_pointer;
-
-        other.nullify();
-    }
-
-    return *this;
-}
-
-void Renderer::set_draw_color(const SDL_Color& color)
-{
-    SDL_SetRenderDrawColor(m_renderer_pointer, color.r, color.g, color.b, color.a);
+    return (SDL_SetRenderDrawColor(m_renderer_pointer, color.r, color.g, color.b, color.a) == 0L);
 }
 
 bool Renderer::clear_target()
@@ -79,14 +43,9 @@ SDL_Renderer* Renderer::pointer() const
     return m_renderer_pointer;
 }
 
-bool Renderer::is_valid() const
+uint32_t Renderer::options_mask() const
 {
-    return (m_renderer_pointer != nullptr);
-}
-
-bool Renderer::is_invalid() const
-{
-    return !(this->is_valid());
+    return m_options_mask;
 }
 
 void Renderer::Enable_VSYNC()
@@ -107,18 +66,4 @@ void Renderer::Enable_Hardware_Acceleration()
 void Renderer::Disable_Hardware_Acceleration()
 {
     Hardware_Acceleration_Flag = 0UL;
-}
-
-void Renderer::deallocate()
-{
-    if(m_renderer_pointer != nullptr)
-    {
-        SDL_DestroyRenderer(m_renderer_pointer);
-        nullify();
-    }
-}
-
-void Renderer::nullify()
-{
-    m_renderer_pointer = nullptr;
 }

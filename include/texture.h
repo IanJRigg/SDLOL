@@ -1,8 +1,6 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include <cstdint>
-#include <string>
 #include <SDL.h>
 
 #include "renderer.h"
@@ -12,17 +10,18 @@ class Texture
 {
 public:
     Texture() = delete;
+    Texture(Texture& other) = delete;
+    Texture(Texture&& other) noexcept = delete;
+
+    Texture& operator=(Texture& other) = delete;
+    Texture& operator=(Texture&& other) noexcept = delete;
+
     Texture(Renderer& renderer, const std::string& path);
     Texture(Renderer& renderer,
             const Font& font,
             const std::string& text,
             const SDL_Color color);
-    Texture(Texture& other);
-    Texture(Texture&& other);
     virtual ~Texture();
-
-    Texture& operator=(Texture& other);
-    Texture& operator=(Texture&& other);
 
     void render_at(const uint32_t x, const uint32_t y) const;
     void render_at(const uint32_t x, const uint32_t y, const SDL_Rect& sprite) const;
@@ -37,26 +36,24 @@ public:
                    const double angle = 0.0,
                    const SDL_RendererFlip flip = SDL_FLIP_NONE) const;
 
-    void modulate_color(const SDL_Color& color) const;
-    void set_alpha(const uint8_t alpha);
-    void set_blend_mode(const SDL_BlendMode mode);
+    bool set_color_modulation(const SDL_Color& color) const;
+    SDL_Color color_modulation() const;
 
-    bool load_rendered_text(const Font& font,
-                            const std::string& text,
-                            const SDL_Color color);
+    bool set_alpha_modulation(const uint8_t alpha) const;
+    uint8_t alpha_modulation() const;
+
+    void set_blend_mode(const SDL_BlendMode mode);
 
     SDL_Texture* pointer() const;
 
-    uint32_t height() const;
+    uint32_t height() const; 
     uint32_t width() const;
-
-    bool is_valid() const;
-    bool is_invalid() const;
 
 private:
     void initialize(const std::string& path);
-    void deallocate();
-    void nullify();
+    bool load_rendered_text(const Font& font,
+                            const std::string& text,
+                            const SDL_Color color);
 
 private:
     SDL_Texture* m_texture_pointer;

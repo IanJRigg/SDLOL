@@ -3,59 +3,27 @@
 
 #include "window.h"
 
-Window::Window()
+Window::Window(const std::string& title, const uint32_t width, const uint32_t height) :
+    m_window_pointer(nullptr),
+    m_title(title),
+    m_width(width),
+    m_height(height)
 {
-    m_window_pointer = SDL_CreateWindow("SDL Tutorial",
+    m_window_pointer = SDL_CreateWindow(m_title.c_str(),
                                         SDL_WINDOWPOS_UNDEFINED,
                                         SDL_WINDOWPOS_UNDEFINED,
-                                        SCREEN_WIDTH,
-                                        SCREEN_HEIGHT,
+                                        m_width,
+                                        m_width,
                                         SDL_WINDOW_SHOWN);
-}
-
-Window::Window(Window& other) :
-    m_window_pointer(other.m_window_pointer)
-{
-    other.nullify();
-}
-
-Window::Window(Window&& other) :
-    m_window_pointer(other.m_window_pointer)
-{
-    other.nullify();
 }
 
 Window::~Window()
 {
-    deallocate();
-}
-
-Window& Window::operator=(Window& other)
-{
-    if(this != &other)
+    if(m_window_pointer != nullptr)
     {
-        deallocate();
-
-        m_window_pointer = other.m_window_pointer;
-
-        other.nullify();
+        SDL_DestroyWindow(m_window_pointer);
+        nullptr;
     }
-
-    return *this;
-}
-
-Window& Window::operator=(Window&& other)
-{
-    if(this != &other)
-    {
-        deallocate();
-
-        m_window_pointer = other.m_window_pointer;
-
-        other.nullify();
-    }
-
-    return *this;
 }
 
 bool Window::update()
@@ -63,7 +31,7 @@ bool Window::update()
     return (SDL_UpdateWindowSurface(m_window_pointer) == 0L);
 }
 
-// SDL_Surface* loadSurface( std::string path )
+// SDL_Surface* loadSurface(std::string path)
 // {
 //     //The final optimized image
 //     SDL_Surface* optimizedSurface = NULL;
@@ -95,27 +63,17 @@ SDL_Window* Window::pointer() const
     return m_window_pointer;
 }
 
-bool Window::is_valid() const
+std::string Window::title() const
 {
-    return (m_window_pointer != nullptr);
+    return m_title;
 }
 
-bool Window::is_invalid() const
+uint32_t Window::height() const
 {
-    return !(this->is_valid());
+    return m_height;
 }
 
-void Window::deallocate()
+uint32_t Window::width() const
 {
-    if(m_window_pointer != nullptr)
-    {
-        SDL_DestroyWindow(m_window_pointer);
-        nullify();
-    }
+    return m_width;
 }
-
-void Window::nullify()
-{
-    m_window_pointer = nullptr;
-}
-

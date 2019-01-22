@@ -7,49 +7,13 @@ Surface::Surface(const std::string& path) :
     load_bitmap(path);
 }
 
-Surface::Surface(Surface& other) :
-    m_surface_pointer(other.m_surface_pointer)
-{
-    other.nullify();
-}
-
-Surface::Surface(Surface&& other) :
-    m_surface_pointer(other.m_surface_pointer)
-{
-    other.nullify();
-}
-
 Surface::~Surface()
 {
-    deallocate();
-}
-
-Surface& Surface::operator=(Surface& other)
-{
-    if(this != &other)
+    if(m_surface_pointer == nullptr)
     {
-        deallocate();
-
-        m_surface_pointer = other.m_surface_pointer;
-
-        other.nullify();
+        SDL_FreeSurface(m_surface_pointer);
+        m_surface_pointer = nullptr;
     }
-
-    return *this;
-}
-
-Surface& Surface::operator=(Surface&& other)
-{
-    if(this != &other)
-    {
-        deallocate();
-
-        m_surface_pointer = other.m_surface_pointer;
-
-        other.nullify();
-    }
-
-    return *this;
 }
 
 bool Surface::blit(const Surface& other)
@@ -78,28 +42,4 @@ void Surface::load_bitmap(const std::string& path)
 SDL_Surface* Surface::pointer() const
 {
     return m_surface_pointer;
-}
-
-bool Surface::is_valid() const
-{
-    return (m_surface_pointer != nullptr);
-}
-
-bool Surface::is_invalid() const
-{
-    return !is_valid();
-}
-
-void Surface::deallocate()
-{
-    if(m_surface_pointer != nullptr)
-    {
-        SDL_FreeSurface(m_surface_pointer);
-        nullify();
-    }
-}
-
-void Surface::nullify()
-{
-    m_surface_pointer = nullptr;
 }
