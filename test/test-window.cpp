@@ -1,55 +1,20 @@
 #include "catch.hpp"
 #include "window.h"
 
-TEST_CASE("Window satisifies the Rule of 5")
+TEST_CASE("Window API")
 {
+    static constexpr uint32_t WINDOW_WIDTH = 1920UL;
+    static constexpr uint32_t WINDOW_HEIGHT  = 1080UL;
+
+    static const std::string WINDOW_TITLE = "THIS IS A TEST CASE!";
+
     SECTION("Window's default constructor creates a window pointer")
     {
-        Window window;
+        Window window(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         REQUIRE(window.pointer() != nullptr);
-        REQUIRE(window.is_valid() == true);
-    }
-
-    SECTION("Window's copy constructor populates the new window, and nullifies the old window")
-    {
-        Window old_window;
-        SDL_Window* old_window_pointer = old_window.pointer();
-
-        Window new_window(old_window);
-
-        REQUIRE(new_window.pointer() == old_window_pointer);
-        REQUIRE(new_window.is_valid() == true);
-
-        REQUIRE(old_window.pointer() == nullptr);
-        REQUIRE(old_window.is_valid() == false);
-        REQUIRE(old_window.is_invalid() == true);
-    }
-
-    SECTION("Window's move contructor populates the new window, and nullifies the old window")
-    {
-
-    }
-
-    SECTION("Window's copy assignment operator populates the new window, and nullifies the old window")
-    {
-        Window old_window;
-        Window new_window;
-
-        SDL_Window* old_window_pointer = old_window.pointer();
-
-        new_window = old_window;
-
-        REQUIRE(new_window.pointer() == old_window_pointer);
-        REQUIRE(new_window.is_valid() == true);
-
-        REQUIRE(old_window.pointer() == nullptr);
-        REQUIRE(old_window.is_valid() == false);
-        REQUIRE(old_window.is_invalid() == true);
-    }
-
-    SECTION("Window's move assignment operator populates the new window, and nullifies the old window")
-    {
-
+        REQUIRE(window.title() == WINDOW_TITLE);
+        REQUIRE(window.width() == WINDOW_WIDTH);
+        REQUIRE(window.height() == WINDOW_HEIGHT);
     }
 }

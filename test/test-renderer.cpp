@@ -1,57 +1,57 @@
 #include "catch.hpp"
 #include "renderer.h"
 
-TEST_CASE("Renderer satisifies the Rule of 5")
+TEST_CASE("Renderer API")
 {
-    Window window; // Needed for normal contstruction
+    Window window("Test Case!", 1920UL, 1080UL); // Needed for normal contstruction
 
-    SECTION("Renderer's single argument constructor creates a renderer pointer")
+    SECTION("Renderer's single argument constructor")
     {
         Renderer renderer(window);
 
         REQUIRE(renderer.pointer() != nullptr);
-        REQUIRE(renderer.is_valid() == true);
     }
 
-    SECTION("Renderer's copy constructor populates the new renderer, and nullifies the old renderer")
+    SECTION("Default state of the renderer flags is disable")
     {
-        Renderer old_renderer(window);
-        SDL_Renderer* old_renderer_pointer = old_renderer.pointer();
+        Renderer renderer(window);
 
-        Renderer new_renderer(old_renderer);
+        REQUIRE(renderer.pointer() != nullptr);
+        REQUIRE(renderer.options_mask() == 0UL);
 
-        REQUIRE(new_renderer.pointer() == old_renderer_pointer);
-        REQUIRE(new_renderer.is_valid() == true);
+        Renderer::Enable_VSYNC();
+        Renderer::Enable_Hardware_Acceleration();
 
-        REQUIRE(old_renderer.pointer() == nullptr);
-        REQUIRE(old_renderer.is_valid() == false);
-        REQUIRE(old_renderer.is_invalid() == true);
+        REQUIRE(renderer.options_mask() == 0UL);
     }
 
-    SECTION("Renderer's move contructor populates the new renderer, and nullifies the old renderer")
+    SECTION("Enabling VSYNC and HW Acceleration changes the flags")
     {
+        Renderer::Enable_VSYNC();
+        Renderer::Enable_Hardware_Acceleration();
 
+        Renderer renderer(window);
+
+        REQUIRE(renderer.pointer() != nullptr);
+        REQUIRE(renderer.options_mask() == (SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED));
     }
 
-    SECTION("Renderer's copy assignment operator populates the new renderer, and nullifies the old renderer")
+    SECTION("Enabling and then disabling VSYNC and HW Acceleration returns to the original state")
     {
-        Renderer old_renderer(window);
-        Renderer new_renderer(window);
+        Renderer::Enable_VSYNC();
+        Renderer::Enable_Hardware_Acceleration();
 
-        SDL_Renderer* old_renderer_pointer = old_renderer.pointer();
+        Renderer::Disable_VSYNC();
+        Renderer::Disable_Hardware_Acceleration();
 
-        new_renderer = old_renderer;
+        Renderer renderer(window);
 
-        REQUIRE(new_renderer.pointer() == old_renderer_pointer);
-        REQUIRE(new_renderer.is_valid() == true);
+        REQUIRE(renderer.pointer() != nullptr);
+        REQUIRE(renderer.options_mask() == 0UL);
 
-        REQUIRE(old_renderer.pointer() == nullptr);
-        REQUIRE(old_renderer.is_valid() == false);
-        REQUIRE(old_renderer.is_invalid() == true);
-    }
+        Renderer::Enable_VSYNC();
+        Renderer::Enable_Hardware_Acceleration();
 
-    SECTION("Renderer's move assignment operator populates the new renderer, and nullifies the old renderer")
-    {
-
+        REQUIRE(renderer.options_mask() == 0UL);
     }
 }
