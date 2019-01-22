@@ -22,7 +22,7 @@ Window::~Window()
     if(m_window_pointer != nullptr)
     {
         SDL_DestroyWindow(m_window_pointer);
-        nullptr;
+        m_window_pointer = nullptr;
     }
 }
 

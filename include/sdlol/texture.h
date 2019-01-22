@@ -36,6 +36,9 @@ public:
                    const double angle = 0.0,
                    const SDL_RendererFlip flip = SDL_FLIP_NONE) const;
 
+    void load_image(const std::string& path);
+    void load_text(const Font& font, const std::string& text, const SDL_Color color);
+
     bool set_color_modulation(const SDL_Color& color) const;
     SDL_Color color_modulation() const;
 
@@ -46,14 +49,11 @@ public:
 
     SDL_Texture* pointer() const;
 
-    uint32_t height() const; 
+    uint32_t height() const;
     uint32_t width() const;
 
 private:
-    void initialize(const std::string& path);
-    bool load_rendered_text(const Font& font,
-                            const std::string& text,
-                            const SDL_Color color);
+    void deallocate_texture();
 
 private:
     SDL_Texture* m_texture_pointer;
