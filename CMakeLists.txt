@@ -6,7 +6,8 @@ endif()
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
 
-set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/sdlol)
+set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
+set(SDLOL_INCLUDE_DIR ${INCLUDE_DIR}/sdlol)
 set(LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/test)
@@ -27,14 +28,14 @@ set(SOURCE_FILES
 )
 
 set(HEADER_FILES
-    ${INCLUDE_DIR}/font.h
-    ${INCLUDE_DIR}/input.h
-    ${INCLUDE_DIR}/renderer.h
-    ${INCLUDE_DIR}/sdl-controller.h
-    ${INCLUDE_DIR}/sdlol-exception.h
-    ${INCLUDE_DIR}/surface.h
-    ${INCLUDE_DIR}/texture.h
-    ${INCLUDE_DIR}/window.h
+    ${SDLOL_INCLUDE_DIR}/font.h
+    ${SDLOL_INCLUDE_DIR}/input.h
+    ${SDLOL_INCLUDE_DIR}/renderer.h
+    ${SDLOL_INCLUDE_DIR}/sdl-controller.h
+    ${SDLOL_INCLUDE_DIR}/sdlol-exception.h
+    ${SDLOL_INCLUDE_DIR}/surface.h
+    ${SDLOL_INCLUDE_DIR}/texture.h
+    ${SDLOL_INCLUDE_DIR}/window.h
 )
 
 find_package(SDL2       REQUIRED)
@@ -51,9 +52,13 @@ add_library(
 set_target_properties(
     ${LIBRARY_NAME}
     PROPERTIES
+        # C++ version information
         CXX_STANDARD 11
         CXX_STANDARD_REQUIRED YES
         CXX_EXTENSIONS NO
+
+        # Public Header file location
+        PUBLIC_HEADER "${HEADER_FILES}"
 )
 
 target_compile_options(
@@ -66,21 +71,34 @@ target_compile_options(
 
 target_include_directories(
     ${LIBRARY_NAME}
-    PRIVATE
+    PUBLIC
         ${SDL2_INCLUDE_DIRS}
         ${SDL2_IMAGE_INCLUDE_DIRS}
         ${SDL2_TTF_INCLUDE_DIRS}
         ${INCLUDE_DIR}
+    PRIVATE
+        ${SDLOL_INCLUDE_DIR}
 )
 
 target_link_libraries(
     ${LIBRARY_NAME}
-    PRIVATE
+    PUBLIC
         ${SDL2_LIBRARIES}
         ${SDL2_IMAGE_LIBRARIES}
         ${SDL2_TTF_LIBRARIES}
 )
 
+install(
+    TARGETS
+        ${LIBRARY_NAME}
+    LIBRARY DESTINATION
+        ${LIB_DIR}
+    PUBLIC_HEADER DESTINATION
+        # include folder already exists
+)
+
+# For use later
+# include(GNUInstallDirs)
 # install(
 #     TARGETS
 #         ${LIBRARY_NAME}
@@ -129,7 +147,7 @@ target_include_directories(
         ${SDL2_INCLUDE_DIRS}
         ${SDL2_IMAGE_INCLUDE_DIRS}
         ${SDL2_TTF_INCLUDE_DIRS}
-        ${INCLUDE_DIR}
+        ${SDLOL_INCLUDE_DIR}
 )
 
 target_link_libraries(
