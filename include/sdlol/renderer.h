@@ -2,7 +2,6 @@
 #define RENDERER_H
 
 #include "window.h"
-#include "colors.h"
 
 class Renderer
 {
