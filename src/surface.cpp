@@ -1,5 +1,5 @@
 #include "surface.h"
-#include "sdlol-exception.h"
+#include "exception.h"
 
 Surface::Surface(const std::string& path) :
     m_surface_pointer(nullptr)

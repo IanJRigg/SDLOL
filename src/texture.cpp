@@ -3,7 +3,7 @@
 
 #include "texture.h"
 #include "surface.h"
-#include "sdlol-exception.h"
+#include "exception.h"
 
 Texture::Texture(Renderer& renderer, const std::string& path) :
     m_texture_pointer(nullptr),

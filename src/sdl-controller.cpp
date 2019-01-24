@@ -4,7 +4,7 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 
-#include <sdlol-exception.h>
+#include "exception.h"
 
 SDL_Controller::SDL_Controller()
 {

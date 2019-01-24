@@ -32,7 +32,7 @@ set(HEADER_FILES
     ${SDLOL_INCLUDE_DIR}/input.h
     ${SDLOL_INCLUDE_DIR}/renderer.h
     ${SDLOL_INCLUDE_DIR}/sdl-controller.h
-    ${SDLOL_INCLUDE_DIR}/sdlol-exception.h
+    ${SDLOL_INCLUDE_DIR}/exception.h
     ${SDLOL_INCLUDE_DIR}/surface.h
     ${SDLOL_INCLUDE_DIR}/texture.h
     ${SDLOL_INCLUDE_DIR}/window.h
