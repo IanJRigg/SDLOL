@@ -6,6 +6,8 @@ then
     rm ./lib/*
 elif [ "$1" = "-c" ]
 then
+    rm -rf ./build/
+    rm ./lib/*
     mkdir build
     cd build
     cmake ..

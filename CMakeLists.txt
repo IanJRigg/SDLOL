@@ -20,8 +20,10 @@ project(${LIBRARY_NAME} VERSION 1.0 LANGUAGES CXX)
 
 set(SOURCE_FILES
     ${SRC_DIR}/font.cpp
+    ${SRC_DIR}/label.cpp
     ${SRC_DIR}/renderer.cpp
     ${SRC_DIR}/sdl-controller.cpp
+    ${SRC_DIR}/sprite.cpp
     ${SRC_DIR}/surface.cpp
     ${SRC_DIR}/texture.cpp
     ${SRC_DIR}/window.cpp
@@ -30,8 +32,10 @@ set(SOURCE_FILES
 set(HEADER_FILES
     ${SDLOL_INCLUDE_DIR}/font.h
     ${SDLOL_INCLUDE_DIR}/input.h
+    ${SDLOL_INCLUDE_DIR}/label.h
     ${SDLOL_INCLUDE_DIR}/renderer.h
     ${SDLOL_INCLUDE_DIR}/sdl-controller.h
+    ${SDLOL_INCLUDE_DIR}/sprite.h
     ${SDLOL_INCLUDE_DIR}/exception.h
     ${SDLOL_INCLUDE_DIR}/surface.h
     ${SDLOL_INCLUDE_DIR}/texture.h

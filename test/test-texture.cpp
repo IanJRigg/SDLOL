@@ -15,7 +15,7 @@ TEST_CASE("Texture API")
 
     SECTION("Texture's default constructor creates a texture pointer")
     {
-        Texture texture(renderer, "");
+        Texture texture(renderer);
 
         REQUIRE(texture.pointer() != nullptr);
     }

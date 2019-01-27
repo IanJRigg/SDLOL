@@ -5,83 +5,24 @@
 #include "surface.h"
 #include "exception.h"
 
-Texture::Texture(Renderer& renderer, const std::string& path) :
+Texture::Texture(Renderer& renderer) :
     m_texture_pointer(nullptr),
     m_renderer(renderer),
     m_height(0UL),
     m_width(0UL)
 {
-    load_image(path);
+
 }
 
-Texture::Texture(Renderer& renderer,
-                 const Font& font,
-                 const std::string& text,
-                 const SDL_Color color) :
-    m_texture_pointer(nullptr),
-    m_renderer(renderer),
-    m_height(0UL),
-    m_width(0UL)
+Texture::Texture(Renderer& renderer, const Surface& surface) :
+    Texture(renderer)
 {
-    load_text(font, text, color);
+    load_surface(surface);
 }
 
 Texture::~Texture()
 {
-    deallocate_texture();
-}
-
-void Texture::load_image(const std::string& path)
-{
-    // If this function is called, the user has intended to destroy the current
-    //   contents. The severity of this should be addressed later.
-    deallocate_texture();
-
-    SDL_Surface* surface = IMG_Load( path.c_str() );
-    if( surface == nullptr )
-    {
-        throw SDLOL_Runtime_Exception("Error loading image, " + std::string(SDL_GetError()));
-    }
-
-    // Color key image
-    SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 0x00UL, 0xFFUL, 0xFFUL));
-
-    // Create texture from surface pixels
-    m_texture_pointer = SDL_CreateTextureFromSurface(m_renderer.pointer(), surface);
-    if(m_texture_pointer == nullptr)
-    {
-        throw SDLOL_Runtime_Exception("Error creating texture, " + std::string(SDL_GetError()));
-    }
-
-    m_height = static_cast<uint32_t>(surface->h);
-    m_width  = static_cast<uint32_t>(surface->w);
-
-    SDL_FreeSurface(surface);
-}
-
-void Texture::load_text(const Font& font, const std::string& text, const SDL_Color color)
-{
-    // If this function is called, the user has intended to destroy the current
-    //   contents. The severity of this should be addressed later.
-    deallocate_texture();
-
-    SDL_Surface* surface = TTF_RenderText_Solid(font.pointer(), text.c_str(), color);
-    if(surface == nullptr)
-    {
-        throw SDLOL_Runtime_Exception("Error loading font, " + std::string(TTF_GetError()));
-    }
-
-    //Create texture from surface pixels
-    m_texture_pointer = SDL_CreateTextureFromSurface(m_renderer.pointer(), surface);
-    if(m_texture_pointer == nullptr)
-    {
-        throw SDLOL_Runtime_Exception("Error creating texture, " + std::string(SDL_GetError()));
-    }
-
-    m_width = surface->w;
-    m_height = surface->h;
-
-    SDL_FreeSurface(surface);
+    deallocate();
 }
 
 void Texture::render_at(const uint32_t x, const uint32_t y) const
@@ -186,6 +127,22 @@ uint8_t Texture::alpha_modulation() const
     return alpha;
 }
 
+void Texture::load_surface(const Surface& surface)
+{
+    // If this function is called, the user has intended to destroy the current contents.
+    deallocate();
+
+    // Create texture from surface pixels
+    m_texture_pointer = SDL_CreateTextureFromSurface(m_renderer.pointer(), surface.pointer());
+    if(m_texture_pointer == nullptr)
+    {
+        throw SDLOL_Runtime_Exception("Error creating texture, " + std::string(SDL_GetError()));
+    }
+
+    m_height = surface.height();
+    m_width  = surface.width();
+}
+
 SDL_Texture* Texture::pointer() const
 {
     return m_texture_pointer;
@@ -201,7 +158,7 @@ uint32_t Texture::width() const
     return m_width;
 }
 
-void Texture::deallocate_texture()
+void Texture::deallocate()
 {
     if(m_texture_pointer != nullptr)
     {

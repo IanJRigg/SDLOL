@@ -4,7 +4,7 @@
 #include <SDL.h>
 
 #include "renderer.h"
-#include "font.h"
+#include "surface.h"
 
 class Texture
 {
@@ -16,11 +16,8 @@ public:
     Texture& operator=(Texture& other) = delete;
     Texture& operator=(Texture&& other) noexcept = delete;
 
-    Texture(Renderer& renderer, const std::string& path);
-    Texture(Renderer& renderer,
-            const Font& font,
-            const std::string& text,
-            const SDL_Color color);
+    explicit Texture(Renderer& renderer);
+    Texture(Renderer& renderer, const Surface& surface);
     virtual ~Texture();
 
     void render_at(const uint32_t x, const uint32_t y) const;
@@ -36,9 +33,6 @@ public:
                    const double angle = 0.0,
                    const SDL_RendererFlip flip = SDL_FLIP_NONE) const;
 
-    void load_image(const std::string& path);
-    void load_text(const Font& font, const std::string& text, const SDL_Color color);
-
     bool set_color_modulation(const SDL_Color& color) const;
     SDL_Color color_modulation() const;
 
@@ -47,13 +41,15 @@ public:
 
     void set_blend_mode(const SDL_BlendMode mode);
 
+    void load_surface(const Surface& surface);
+
     SDL_Texture* pointer() const;
 
     uint32_t height() const;
     uint32_t width() const;
 
 private:
-    void deallocate_texture();
+    void deallocate();
 
 private:
     SDL_Texture* m_texture_pointer;

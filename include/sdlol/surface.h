@@ -15,13 +15,24 @@ public:
     Surface& operator=(Surface&& other) noexcept = delete;
 
     explicit Surface(const std::string& path);
+    explicit Surface(SDL_Surface* const pointer);
     virtual ~Surface();
+
+    Surface& operator=(SDL_Surface* pointer);
+
+    bool set_color_key(const SDL_Color& color);
 
     bool blit(const Surface& other);
     void load_bitmap(const std::string& path);
 
     // Accessors
     SDL_Surface* pointer() const;
+
+    uint32_t height() const;
+    uint32_t width() const;
+
+private:
+    void deallocate();
 
 private:
     SDL_Surface* m_surface_pointer;
