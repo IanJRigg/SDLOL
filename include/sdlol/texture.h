@@ -59,9 +59,6 @@ private:
     SDL_Texture* m_texture_pointer;
 
     Renderer& m_renderer;
-
-    uint32_t m_height;
-    uint32_t m_width;
 };
 
 #endif

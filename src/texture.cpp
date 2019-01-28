@@ -7,9 +7,7 @@
 
 Texture::Texture(Renderer& renderer) :
     m_texture_pointer(nullptr),
-    m_renderer(renderer),
-    m_height(0UL),
-    m_width(0UL)
+    m_renderer(renderer)
 {
 
 }
@@ -31,8 +29,8 @@ void Texture::render_at(const uint32_t x, const uint32_t y) const
     {
         static_cast<int>(x),
         static_cast<int>(y),
-        static_cast<int>(m_width),
-        static_cast<int>(m_height)
+        static_cast<int>(this->width()),
+        static_cast<int>(this->height())
     };
 
     SDL_RenderCopy(m_renderer.pointer(), m_texture_pointer, nullptr, &quad);
@@ -60,8 +58,8 @@ void Texture::render_at(const uint32_t x, const uint32_t y, const SDL_Rect& spri
 //     {
 //         static_cast<int>(x),
 //         static_cast<int>(y),
-//         static_cast<int>(m_width),
-//         static_cast<int>(m_height)
+//         static_cast<int>(this->width()),
+//         static_cast<int>(this->height())
 //     };
 
 //     SDL_RenderCopyEx(m_renderer.pointer(),
@@ -138,9 +136,6 @@ void Texture::load_surface(const Surface& surface)
     {
         throw SDLOL_Runtime_Exception("Error creating texture, " + std::string(SDL_GetError()));
     }
-
-    m_height = surface.height();
-    m_width  = surface.width();
 }
 
 SDL_Texture* Texture::pointer() const
@@ -150,12 +145,36 @@ SDL_Texture* Texture::pointer() const
 
 uint32_t Texture::height() const
 {
-    return m_height;
+    if(m_texture_pointer != nullptr)
+    {
+        return 0UL;
+    }
+
+    int texture_height = 0UL;
+
+    if(SDL_QueryTexture(m_texture_pointer, nullptr, nullptr, nullptr, &texture_height) != 0L)
+    {
+        return 0UL;
+    }
+
+    return static_cast<uint32_t>(texture_height);
 }
 
 uint32_t Texture::width() const
 {
-    return m_width;
+    if(m_texture_pointer != nullptr)
+    {
+        return 0UL;
+    }
+
+    int texture_width = 0UL;
+
+    if(SDL_QueryTexture(m_texture_pointer, nullptr, nullptr, &texture_width, nullptr) != 0L)
+    {
+        return 0UL;
+    }
+
+    return static_cast<uint32_t>(texture_width);
 }
 
 void Texture::deallocate()
@@ -164,7 +183,5 @@ void Texture::deallocate()
     {
         SDL_DestroyTexture(m_texture_pointer);
         m_texture_pointer = nullptr;
-        m_height  = 0UL;
-        m_width   = 0UL;
     }
 }
