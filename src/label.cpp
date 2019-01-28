@@ -1,7 +1,7 @@
 #include "label.h"
 
 Label::Label(Renderer& renderer,
-             const Font& font,
+             Font& font,
              const std::string& text,
              const SDL_Color& color) :
     Texture(renderer),

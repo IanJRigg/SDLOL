@@ -20,10 +20,11 @@ public:
 
     Surface& operator=(SDL_Surface* pointer);
 
+    bool load_image(const std::string& path_to_image);
+
     bool set_color_key(const SDL_Color& color);
 
     bool blit(const Surface& other);
-    void load_bitmap(const std::string& path);
 
     // Accessors
     SDL_Surface* pointer() const;

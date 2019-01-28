@@ -1,21 +1,26 @@
 #! /bin/bash
 
-if [ "$1" = "-d" ]
+if [ "$1" = "-c" ]
 then
     rm -rf ./build/
-    rm ./lib/*
-elif [ "$1" = "-c" ]
-then
-    rm -rf ./build/
-    rm ./lib/*
     mkdir build
     cd build
     cmake ..
     make -j8
-    make install
-elif [ "$1" = "-h" ]
+    cp -R ../test/test-media/ ./test-media
+elif [ "$1" = "-m" ]
 then
-    echo "-d to clean the directories. -c to compile"
+    cd build
+    make -j8
+    cp -R ../test/test-media/ ./test-media
+elif [ "$1" = "-i" ]
+then
+    cd build
+    make install
+elif [ "$1" = "-t" ]
+then
+    cd build
+    ./SDLOL-test
 else
-    echo "-d to clean the directories. -c to compile"
+    echo "-c to compile, -i to install, -m to run makefiles"
 fi

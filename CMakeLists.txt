@@ -23,7 +23,6 @@ set(SOURCE_FILES
     ${SRC_DIR}/label.cpp
     ${SRC_DIR}/renderer.cpp
     ${SRC_DIR}/sdl-controller.cpp
-    ${SRC_DIR}/sprite.cpp
     ${SRC_DIR}/surface.cpp
     ${SRC_DIR}/texture.cpp
     ${SRC_DIR}/window.cpp
@@ -35,7 +34,6 @@ set(HEADER_FILES
     ${SDLOL_INCLUDE_DIR}/label.h
     ${SDLOL_INCLUDE_DIR}/renderer.h
     ${SDLOL_INCLUDE_DIR}/sdl-controller.h
-    ${SDLOL_INCLUDE_DIR}/sprite.h
     ${SDLOL_INCLUDE_DIR}/exception.h
     ${SDLOL_INCLUDE_DIR}/surface.h
     ${SDLOL_INCLUDE_DIR}/texture.h
@@ -129,6 +127,7 @@ set(TEST_SOURCE_FILES
 
 set(TEST_HEADER_FILES
     ${TEST_DIR}/catch.hpp
+    ${TEST_DIR}/constants.h
 )
 
 add_executable(

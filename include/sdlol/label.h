@@ -12,7 +12,7 @@ public:
     Label& operator=(Label&& other) noexcept = delete;
 
     Label(Renderer& renderer,
-          const Font& font,
+          Font& font,
           const std::string& text,
           const SDL_Color& color);
     virtual ~Label();
@@ -25,6 +25,6 @@ public:
 private:
 
 private:
-    const Font& m_font;
+    Font& m_font;
     SDL_Color m_color;
 };
