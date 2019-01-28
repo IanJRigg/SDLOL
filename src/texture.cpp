@@ -12,15 +12,21 @@ Texture::Texture(Renderer& renderer) :
 
 }
 
+Texture::Texture(Renderer& renderer, const std::string& path_to_image) :
+    Texture(renderer)
+{
+    this->load_image(path_to_image);
+}
+
 Texture::Texture(Renderer& renderer, const Surface& surface) :
     Texture(renderer)
 {
-    load_surface(surface);
+    this->load_surface(surface);
 }
 
 Texture::~Texture()
 {
-    deallocate();
+    this->deallocate();
 }
 
 void Texture::render_at(const uint32_t x, const uint32_t y) const
@@ -136,6 +142,12 @@ void Texture::load_surface(const Surface& surface)
     {
         throw SDLOL_Runtime_Exception("Error creating texture, " + std::string(SDL_GetError()));
     }
+}
+
+void Texture::load_image(const std::string& path_to_image)
+{
+    Surface surface(path_to_image);
+    load_surface(surface);
 }
 
 SDL_Texture* Texture::pointer() const

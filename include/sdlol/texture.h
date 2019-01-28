@@ -16,7 +16,7 @@ public:
     Texture& operator=(Texture& other) = delete;
     Texture& operator=(Texture&& other) noexcept = delete;
 
-    Texture(Renderer& renderer, const std::string path_to_image);
+    Texture(Renderer& renderer, const std::string& path_to_image);
     Texture(Renderer& renderer, const Surface& surface);
     virtual ~Texture();
 
@@ -42,6 +42,7 @@ public:
     void set_blend_mode(const SDL_BlendMode mode);
 
     void load_surface(const Surface& surface);
+    void load_image(const std::string& path_to_image);
 
     SDL_Texture* pointer() const;
 
