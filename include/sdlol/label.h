@@ -19,8 +19,8 @@ public:
 
     void load(const std::string& text);
 
-    void set_font(const Font& font);
-    void set_color(const SDL_Color& color);
+    void set_font(Font& font);
+    void set_color(SDL_Color& color);
 
 private:
 

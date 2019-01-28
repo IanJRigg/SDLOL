@@ -20,7 +20,7 @@ public:
 
     Surface& operator=(SDL_Surface* pointer);
 
-    bool load_image(const std::string& path_to_image);
+    void load_image(const std::string& path_to_image);
 
     bool set_color_key(const SDL_Color& color);
 

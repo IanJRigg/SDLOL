@@ -25,3 +25,13 @@ void Label::load(const std::string& text)
 
     load_surface(surface);
 }
+
+// void Label::set_font(const Font& font)
+// {
+//     m_font = font;
+// }
+
+// void Label::set_color(const SDL_Color& color)
+// {
+//     color = color;
+// }

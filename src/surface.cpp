@@ -33,7 +33,7 @@ Surface& Surface::operator=(SDL_Surface* const pointer)
     return *this;
 }
 
-bool Surface::load_image(const std::string& path_to_image)
+void Surface::load_image(const std::string& path_to_image)
 {
     m_surface_pointer = IMG_Load(path_to_image.c_str());
 }
