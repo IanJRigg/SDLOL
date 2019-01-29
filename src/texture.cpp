@@ -137,7 +137,7 @@ void Texture::load_surface(const Surface& surface)
     deallocate();
 
     // Create texture from surface pixels
-    m_texture_pointer = SDL_CreateTextureFromSurface(m_renderer.pointer(), surface.pointer());
+    m_texture_pointer = SDL_CreateTextureFromSurface(m_renderer.pointer(), surface.pointer().get());
     if(m_texture_pointer == nullptr)
     {
         throw SDLOL_Runtime_Exception("Error creating texture, " + std::string(SDL_GetError()));

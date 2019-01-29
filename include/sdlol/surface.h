@@ -8,7 +8,7 @@ class Surface
 {
 public:
     Surface() = delete;
-    Surface(Surface& other) = delete;
+    Surface(Surface& other) = default;
     Surface(Surface&& other) noexcept = delete;
 
     Surface& operator=(Surface& other) = delete;
@@ -16,7 +16,7 @@ public:
 
     explicit Surface(const std::string& path);
     explicit Surface(SDL_Surface* const pointer);
-    virtual ~Surface();
+    virtual ~Surface() = default;
 
     Surface& operator=(SDL_Surface* pointer);
 
@@ -27,16 +27,13 @@ public:
     bool blit(const Surface& other);
 
     // Accessors
-    SDL_Surface* pointer() const;
+    std::shared_ptr<SDL_Surface> pointer() const;
 
     uint32_t height() const;
     uint32_t width() const;
 
 private:
-    void deallocate();
-
-private:
-    SDL_Surface* m_surface_pointer;
+    std::shared_ptr<SDL_Surface> m_surface_pointer;
 };
 
 #endif
