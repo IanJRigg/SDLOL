@@ -140,7 +140,7 @@ void Texture::load_surface(const Surface& surface)
     m_texture_pointer = SDL_CreateTextureFromSurface(m_renderer.pointer(), surface.pointer().get());
     if(m_texture_pointer == nullptr)
     {
-        throw SDLOL_Runtime_Exception("Error creating texture, " + std::string(SDL_GetError()));
+        throw SDLOL_Exception("Error creating texture, " + std::string(SDL_GetError()));
     }
 }
 

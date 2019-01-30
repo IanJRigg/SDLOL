@@ -3,7 +3,12 @@
 
 #include <SDL_image.h>
 
-static const auto DELETER_LAMBDA = [](SDL_Surface* pointer){ SDL_FreeSurface(pointer); };
+#include <iostream>
+
+static const auto DELETER_LAMBDA = [](SDL_Surface* pointer)
+{
+    SDL_FreeSurface(pointer);
+};
 
 Surface::Surface(const std::string& path_to_image) :
     m_surface_pointer(nullptr, DELETER_LAMBDA)
@@ -11,21 +16,11 @@ Surface::Surface(const std::string& path_to_image) :
     load_image(path_to_image);
 }
 
+// Don't pass in another surfaces raw pointer via here!!! Else you deserve it
 Surface::Surface(SDL_Surface* const pointer) :
-    m_surface_pointer(pointer)
+    m_surface_pointer(pointer, DELETER_LAMBDA)
 {
 
-}
-
-Surface& Surface::operator=(SDL_Surface* const pointer)
-{
-    // Make sure self assignment doesn't deallocate anything
-    if(m_surface_pointer.get() != pointer)
-    {
-        m_surface_pointer.reset(pointer, DELETER_LAMBDA);
-    }
-
-    return *this;
 }
 
 void Surface::load_image(const std::string& path_to_image)
@@ -33,7 +28,7 @@ void Surface::load_image(const std::string& path_to_image)
     SDL_Surface* surface = IMG_Load(path_to_image.c_str());
     if(surface == nullptr)
     {
-        throw new SDLOL_Runtime_Exception("Unable to find resource at: " + path_to_image);
+        throw new SDLOL_Exception("Unable to find resource at: " + path_to_image);
     }
 
     m_surface_pointer.reset(surface, DELETER_LAMBDA);

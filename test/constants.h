@@ -11,6 +11,8 @@ static const std::string TEST_FONT = "./test-media/test.ttf";
 
 static const std::string WINDOW_TITLE = "THIS IS A TEST CASE!";
 
+static constexpr uint32_t ZERO_PIXELS = 0UL;
+
 static constexpr uint32_t TWO_HUNDRED_PIXELS = 200UL;
 static constexpr uint32_t FOUR_HUNDRED_PIXELS = 400UL;
 

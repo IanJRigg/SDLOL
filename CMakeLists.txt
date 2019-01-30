@@ -117,12 +117,12 @@ set(APPLICATION_NAME SDLOL-test)
 project(${APPLICATION_NAME} VERSION 1.0 LANGUAGES CXX)
 
 set(TEST_SOURCE_FILES
-    ${TEST_DIR}/test-font.cpp
-    ${TEST_DIR}/test-renderer.cpp
+    # ${TEST_DIR}/test-font.cpp
+    # ${TEST_DIR}/test-renderer.cpp
     ${TEST_DIR}/test-runner.cpp
     ${TEST_DIR}/test-surface.cpp
-    ${TEST_DIR}/test-texture.cpp
-    ${TEST_DIR}/test-window.cpp
+    # ${TEST_DIR}/test-texture.cpp
+    # ${TEST_DIR}/test-window.cpp
 )
 
 set(TEST_HEADER_FILES
@@ -156,5 +156,8 @@ target_include_directories(
 target_link_libraries(
     ${APPLICATION_NAME}
     PRIVATE
+        ${SDL2_LIBRARIES}
+        ${SDL2_IMAGE_LIBRARIES}
+        ${SDL2_TTF_LIBRARIES}
         ${LIBRARY_NAME}
 )

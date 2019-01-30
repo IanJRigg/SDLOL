@@ -4,10 +4,10 @@
 #include <exception>
 #include <string>
 
-class SDLOL_Runtime_Exception : public std::runtime_error
+class SDLOL_Exception : public std::runtime_error
 {
 public:
-    explicit SDLOL_Runtime_Exception(const std::string& message) :
+    explicit SDLOL_Exception(const std::string& message) :
         runtime_error(message)
     {
 
