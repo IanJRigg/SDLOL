@@ -7,6 +7,9 @@
 static const std::string TEST_BMP_200X200_WHITE = "./test-media/test-200x200-white.bmp";
 static const std::string TEST_PNG_200X200_WHITE = "./test-media/test-200x200-white.png";
 
+static const std::string TEST_BMP_400X400_WHITE = "./test-media/test-400x400-white.bmp";
+static const std::string TEST_PNG_400X400_WHITE = "./test-media/test-400x400-white.png";
+
 static const std::string TEST_FONT = "./test-media/test.ttf";
 
 static const std::string WINDOW_TITLE = "THIS IS A TEST CASE!";

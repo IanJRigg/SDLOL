@@ -157,18 +157,51 @@ TEST_CASE("Surface move assignment operator")
     }
 }
 
-TEST_CASE("Surface API")
+TEST_CASE("load_image()")
 {
-    SECTION("Bounds check: load_image()")
+    SECTION("load_image() doesn't throw an exception if the file exists")
     {
-
+        Surface surface(nullptr);
+        REQUIRE_NOTHROW(surface.load_image(TEST_PNG_200X200_WHITE));
     }
 
+    SECTION("load_image() throws an exception if the file doesn't exist")
+    {
+        Surface surface(nullptr);
+        REQUIRE_THROWS(surface.load_image(""));
+    }
+
+    SECTION("load_image() different images will change the dimmensions of the image")
+    {
+        Surface surface(TEST_PNG_200X200_WHITE);
+        std::shared_ptr<SDL_Surface> surface_pointer = surface.pointer();
+
+        REQUIRE(surface.height() == TWO_HUNDRED_PIXELS);
+        REQUIRE(surface.width()  == TWO_HUNDRED_PIXELS);
+
+        // One in surface, and one in surface_pointer
+        REQUIRE(surface_pointer.use_count() == 2UL);
+
+        surface.load_image(TEST_PNG_400X400_WHITE);
+
+        REQUIRE(surface.height() == FOUR_HUNDRED_PIXELS);
+        REQUIRE(surface.width()  == FOUR_HUNDRED_PIXELS);
+
+        // Only one in surface_pointer, the one in surface should have been destroyed
+        REQUIRE(surface_pointer.use_count() == 1UL);
+    }
+}
+
+TEST_CASE("set_color_key()")
+{
     SECTION("Bounds check: set_color_key()")
     {
 
     }
+}
 
+TEST_CASE("blit()")
+{
     SECTION("Bounds check: blit()")
     {
 
