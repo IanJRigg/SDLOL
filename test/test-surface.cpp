@@ -29,7 +29,7 @@ TEST_CASE("Surface Single Argument String Constructor")
         REQUIRE(surface.width()  == TWO_HUNDRED_PIXELS);
     }
 
-    SECTION("Construction with a bad path results in a SDLOL Runtime Exception")
+    SECTION("Construction with a bad path results in a SDLOL Exception")
     {
         REQUIRE_THROWS(Surface(""));
     }
@@ -91,6 +91,27 @@ TEST_CASE("Surface Copy Constructor")
     }
 }
 
+TEST_CASE("Surface Move Constructor")
+{
+    SECTION("Move Construction with rvalue reference results in a valid Surface")
+    {
+        Surface source_surface(TEST_PNG_200X200_WHITE);
+        Surface destination_surface(std::move(source_surface));
+
+        REQUIRE(source_surface.height() == ZERO_PIXELS);
+        REQUIRE(source_surface.width()  == ZERO_PIXELS);
+
+        // Ownership of the pointer should be moved away from source_surface
+        REQUIRE(source_surface.pointer().use_count() == 0UL);
+
+        REQUIRE(destination_surface.height() == TWO_HUNDRED_PIXELS);
+        REQUIRE(destination_surface.width()  == TWO_HUNDRED_PIXELS);
+
+        // Owner of the pointer should be destination_surface
+        REQUIRE(destination_surface.pointer().use_count() == 2UL);
+    }
+}
+
 TEST_CASE("Surface assignment operator")
 {
     SECTION("Use of the assignment operator results in identical objects")
@@ -99,7 +120,7 @@ TEST_CASE("Surface assignment operator")
         Surface second_surface(TEST_PNG_200X200_WHITE);
 
         REQUIRE(first_surface.pointer() != second_surface.pointer());
-        auto pointer = first_surface.pointer();
+        std::shared_ptr<SDL_Surface> pointer = first_surface.pointer();
 
         // One for the copy here, and the one that belongs to first_surface
         REQUIRE(pointer.use_count() == 2UL);
@@ -110,6 +131,29 @@ TEST_CASE("Surface assignment operator")
 
         // One for the copy only, the one in first surface be destroyed
         REQUIRE(pointer.use_count() == 1UL);
+    }
+}
+
+TEST_CASE("Surface move assignment operator")
+{
+    SECTION("Use of move assignment operator results in identical objects")
+    {
+        Surface source_surface(TEST_PNG_200X200_WHITE);
+        Surface destination_surface(nullptr);
+
+        destination_surface = std::move(source_surface);
+
+        REQUIRE(source_surface.height() == ZERO_PIXELS);
+        REQUIRE(source_surface.width()  == ZERO_PIXELS);
+
+        // Ownership of the pointer should be moved away from source_surface
+        REQUIRE(source_surface.pointer().use_count() == 0UL);
+
+        REQUIRE(destination_surface.height() == TWO_HUNDRED_PIXELS);
+        REQUIRE(destination_surface.width()  == TWO_HUNDRED_PIXELS);
+
+        // Owner of the pointer should be destination_surface
+        REQUIRE(destination_surface.pointer().use_count() == 2UL);
     }
 }
 
