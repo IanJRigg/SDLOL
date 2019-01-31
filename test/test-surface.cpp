@@ -194,16 +194,46 @@ TEST_CASE("load_image()")
 
 TEST_CASE("set_color_key()")
 {
-    SECTION("Bounds check: set_color_key()")
+    SECTION("set_color_key() returns false when it's internal pointer is null")
     {
+        Surface surface(nullptr);
+        SDL_Color color = { 0x00U, 0x00U, 0x00U, 0x00U };
 
+        REQUIRE(surface.set_color_key(color) == false);
     }
 }
 
 TEST_CASE("blit()")
 {
-    SECTION("Bounds check: blit()")
+    SECTION("blit() returns false when it's pointer is null and it's passed a null surface")
     {
+        Surface first_surface(nullptr);
+        Surface second_surface(nullptr);
 
+        REQUIRE(first_surface.blit(second_surface) == false);
+    }
+
+    SECTION("blit() returns false when it's pointer is null and it's passed a valid surface")
+    {
+        Surface first_surface(nullptr);
+        Surface second_surface(TEST_PNG_200X200_WHITE);
+
+        REQUIRE(first_surface.blit(second_surface) == false);
+    }
+
+    SECTION("blit() returns false when it's pointer is valid and it's passed a null surface")
+    {
+        Surface first_surface(TEST_PNG_400X400_WHITE);
+        Surface second_surface(nullptr);
+
+        REQUIRE(first_surface.blit(second_surface) == false);
+    }
+
+    SECTION("blit() returns true when it's pointer is valid and it's passed a valid surface")
+    {
+        Surface first_surface(TEST_PNG_400X400_WHITE);
+        Surface second_surface(TEST_PNG_200X200_WHITE);
+
+        REQUIRE(first_surface.blit(second_surface) == true);
     }
 }

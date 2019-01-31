@@ -36,6 +36,11 @@ void Surface::load_image(const std::string& path_to_image)
 
 bool Surface::set_color_key(const SDL_Color& color)
 {
+    if(m_surface_pointer == nullptr)
+    {
+        return false;
+    }
+
     uint32_t key = SDL_MapRGB(m_surface_pointer.get()->format,
                               color.r,
                               color.g,
