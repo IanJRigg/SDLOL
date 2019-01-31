@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include <string>
+#include <memory>
 
 class Surface
 {

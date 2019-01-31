@@ -5,10 +5,7 @@
 
 #include <iostream>
 
-static const auto DELETER_LAMBDA = [](SDL_Surface* pointer)
-{
-    SDL_FreeSurface(pointer);
-};
+static const auto DELETER_LAMBDA = [](SDL_Surface* pointer) { SDL_FreeSurface(pointer); };
 
 Surface::Surface(const std::string& path_to_image) :
     m_surface_pointer(nullptr, DELETER_LAMBDA)

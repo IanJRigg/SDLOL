@@ -5,7 +5,6 @@
 #include "exception.h"
 
 #include <SDL_image.h>
-#include <iostream>
 
 TEST_CASE("Surface Single Argument String Constructor")
 {

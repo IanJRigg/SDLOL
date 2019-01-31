@@ -1,57 +1,129 @@
 #include "catch.hpp"
+#include "constants.h"
+
 #include "renderer.h"
 
-TEST_CASE("Renderer API")
+TEST_CASE("Renderer Single Argument Constructor")
 {
-    Window window("Test Case!", 1920UL, 1080UL); // Needed for normal contstruction
+    Window window("Test Case!", NINETEEN_TWENTY_PIXELS, ONE_THOUSDAND_EIGHTY_PIXELS);
 
-    SECTION("Renderer's single argument constructor")
+    SECTION("Renderer can be constructed with a bitmap")
     {
-        Renderer renderer(window);
+        Renderer Renderer(window);
 
-        REQUIRE(renderer.pointer() != nullptr);
+        REQUIRE(Renderer.pointer() != nullptr);
+    }
+}
+
+TEST_CASE("Renderer Copy Constructor")
+{
+    Window window("Test Case!", NINETEEN_TWENTY_PIXELS, ONE_THOUSDAND_EIGHTY_PIXELS);
+
+    SECTION("Copy Construction results in identical classes")
+    {
+        Renderer first_renderer(window);
+        Renderer second_renderer(first_renderer);
+
+        REQUIRE(first_renderer.pointer() == second_renderer.pointer());
+
+        // Check for 3 becuase the call to pointer() makes a copy of the shared pointer
+        REQUIRE(first_renderer.pointer().use_count() == 3UL);
     }
 
-    SECTION("Default state of the renderer flags is disable")
+    SECTION("Destroying a copy constructed Renderer doesn't destroy the original")
     {
-        Renderer renderer(window);
+        Renderer first_renderer(window);
 
-        REQUIRE(renderer.pointer() != nullptr);
-        REQUIRE(renderer.options_mask() == 0UL);
+        // Create a new scoped block ensure that the renderer destructor is called once
+        {
+            Renderer second_renderer(first_renderer);
+        }
 
-        Renderer::Enable_VSYNC();
-        Renderer::Enable_Hardware_Acceleration();
-
-        REQUIRE(renderer.options_mask() == 0UL);
+        // One for the copy of the renderer pointer, one for first_renderer
+        REQUIRE(first_renderer.pointer().use_count() == 2UL);
     }
+}
 
-    SECTION("Enabling VSYNC and HW Acceleration changes the flags")
+TEST_CASE("Renderer Move Constructor")
+{
+    Window window("Test Case!", NINETEEN_TWENTY_PIXELS, ONE_THOUSDAND_EIGHTY_PIXELS);
+
+    SECTION("Move Construction with rvalue reference results in a valid Renderer")
     {
-        Renderer::Enable_VSYNC();
-        Renderer::Enable_Hardware_Acceleration();
+        Renderer source_renderer(window);
+        Renderer destination_renderer(std::move(source_renderer));
 
-        Renderer renderer(window);
+        // Ownership of the pointer should be moved away from source_renderer
+        REQUIRE(source_renderer.pointer().use_count() == 0UL);
 
-        REQUIRE(renderer.pointer() != nullptr);
-        REQUIRE(renderer.options_mask() == (SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED));
+        // Owner of the pointer should be destination_renderer
+        REQUIRE(destination_renderer.pointer().use_count() == 2UL);
     }
+}
 
-    SECTION("Enabling and then disabling VSYNC and HW Acceleration returns to the original state")
+TEST_CASE("Renderer assignment operator")
+{
+    Window window("Test Case!", NINETEEN_TWENTY_PIXELS, ONE_THOUSDAND_EIGHTY_PIXELS);
+
+    SECTION("Use of the assignment operator results in identical objects")
     {
-        Renderer::Enable_VSYNC();
-        Renderer::Enable_Hardware_Acceleration();
+        Renderer first_renderer(window);
+        Renderer second_renderer(window);
 
-        Renderer::Disable_VSYNC();
-        Renderer::Disable_Hardware_Acceleration();
+        REQUIRE(first_renderer.pointer() != second_renderer.pointer());
+        std::shared_ptr<SDL_Renderer> pointer = first_renderer.pointer();
 
-        Renderer renderer(window);
+        // One for the copy here, and the one that belongs to first_renderer
+        REQUIRE(pointer.use_count() == 2UL);
 
-        REQUIRE(renderer.pointer() != nullptr);
-        REQUIRE(renderer.options_mask() == 0UL);
+        first_renderer = second_renderer;
 
-        Renderer::Enable_VSYNC();
-        Renderer::Enable_Hardware_Acceleration();
+        REQUIRE(first_renderer.pointer() == second_renderer.pointer());
 
-        REQUIRE(renderer.options_mask() == 0UL);
+        // One for the copy only, the one in first Renderer be destroyed
+        REQUIRE(pointer.use_count() == 1UL);
+    }
+}
+
+TEST_CASE("Renderer move assignment operator")
+{
+    Window window("Test Case!", NINETEEN_TWENTY_PIXELS, ONE_THOUSDAND_EIGHTY_PIXELS);
+
+    SECTION("Use of move assignment operator results in identical objects")
+    {
+        Renderer source_renderer(window);
+        Renderer destination_renderer(window);
+
+        destination_renderer = std::move(source_renderer);
+
+        // Ownership of the pointer should be moved away from source_renderer
+        REQUIRE(source_renderer.pointer().use_count() == 0UL);
+
+        // Owner of the pointer should be destination_renderer
+        REQUIRE(destination_renderer.pointer().use_count() == 2UL);
+    }
+}
+
+TEST_CASE("set_draw_color()")
+{
+    SECTION("")
+    {
+
+    }
+}
+
+TEST_CASE("clear_target()")
+{
+    SECTION("")
+    {
+
+    }
+}
+
+TEST_CASE("render_present()")
+{
+    SECTION("")
+    {
+
     }
 }

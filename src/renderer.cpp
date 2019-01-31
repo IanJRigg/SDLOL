@@ -5,47 +5,42 @@
 uint32_t Renderer::VSYNC_Flag = 0UL;
 uint32_t Renderer::Hardware_Acceleration_Flag = 0UL;
 
-Renderer::Renderer(const Window& window) :
-    m_renderer_pointer(nullptr),
-    m_options_mask(VSYNC_Flag | Hardware_Acceleration_Flag)
-{
-    m_renderer_pointer = SDL_CreateRenderer(window.pointer(),
-                                            FIRST_SUPPORTED_DRIVER,
-                                            m_options_mask);
-}
+static const auto DELETER_LAMBDA = [](SDL_Renderer* pointer) { SDL_DestroyRenderer(pointer); };
 
-Renderer::~Renderer()
+Renderer::Renderer(const Window& window) :
+    m_renderer_pointer(nullptr)
 {
-    if(m_renderer_pointer != nullptr)
-    {
-        SDL_DestroyRenderer(m_renderer_pointer);
-        m_renderer_pointer = nullptr;
-    }
+    uint32_t options_mask = VSYNC_Flag | Hardware_Acceleration_Flag;
+
+    SDL_Renderer* renderer = SDL_CreateRenderer(window.pointer(),
+                                                FIRST_SUPPORTED_DRIVER,
+                                                options_mask);
+
+    m_renderer_pointer.reset(renderer, DELETER_LAMBDA);
 }
 
 bool Renderer::set_draw_color(const SDL_Color& color)
 {
-    return (SDL_SetRenderDrawColor(m_renderer_pointer, color.r, color.g, color.b, color.a) == 0L);
+    return (SDL_SetRenderDrawColor(m_renderer_pointer.get(),
+                                   color.r,
+                                   color.g,
+                                   color.b,
+                                   color.a) == 0L);
 }
 
 bool Renderer::clear_target()
 {
-    return (SDL_RenderClear(this->m_renderer_pointer) == 0L);
+    return (SDL_RenderClear(m_renderer_pointer.get()) == 0L);
 }
 
 void Renderer::render_present()
 {
-    SDL_RenderPresent(this->m_renderer_pointer);
+    SDL_RenderPresent(m_renderer_pointer.get());
 }
 
-SDL_Renderer* Renderer::pointer() const
+std::shared_ptr<SDL_Renderer> Renderer::pointer() const
 {
     return m_renderer_pointer;
-}
-
-uint32_t Renderer::options_mask() const
-{
-    return m_options_mask;
 }
 
 void Renderer::Enable_VSYNC()

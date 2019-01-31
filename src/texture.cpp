@@ -39,7 +39,7 @@ void Texture::render_at(const uint32_t x, const uint32_t y) const
         static_cast<int>(this->height())
     };
 
-    SDL_RenderCopy(m_renderer.pointer(), m_texture_pointer, nullptr, &quad);
+    SDL_RenderCopy(m_renderer.pointer().get(), m_texture_pointer, nullptr, &quad);
 }
 
 void Texture::render_at(const uint32_t x, const uint32_t y, const SDL_Rect& sprite) const
@@ -52,7 +52,7 @@ void Texture::render_at(const uint32_t x, const uint32_t y, const SDL_Rect& spri
         static_cast<int>(sprite.h)
     };
 
-    SDL_RenderCopy(m_renderer.pointer(), m_texture_pointer, &sprite, &quad);
+    SDL_RenderCopy(m_renderer.pointer().get(), m_texture_pointer, &sprite, &quad);
 }
 
 // void Texture::render_at(const uint32_t x,
@@ -68,7 +68,7 @@ void Texture::render_at(const uint32_t x, const uint32_t y, const SDL_Rect& spri
 //         static_cast<int>(this->height())
 //     };
 
-//     SDL_RenderCopyEx(m_renderer.pointer(),
+//     SDL_RenderCopyEx(m_renderer.pointer().get(),
 //                      m_texture_pointer,
 //                      nullptr,
 //                      &quad,
@@ -92,7 +92,7 @@ void Texture::render_at(const uint32_t x,
         static_cast<int>(sprite.h)
     };
 
-    SDL_RenderCopyEx(m_renderer.pointer(),
+    SDL_RenderCopyEx(m_renderer.pointer().get(),
                      m_texture_pointer,
                      &sprite,
                      &quad,
@@ -137,7 +137,7 @@ void Texture::load_surface(const Surface& surface)
     deallocate();
 
     // Create texture from surface pixels
-    m_texture_pointer = SDL_CreateTextureFromSurface(m_renderer.pointer(), surface.pointer().get());
+    m_texture_pointer = SDL_CreateTextureFromSurface(m_renderer.pointer().get(), surface.pointer().get());
     if(m_texture_pointer == nullptr)
     {
         throw SDLOL_Exception("Error creating texture, " + std::string(SDL_GetError()));

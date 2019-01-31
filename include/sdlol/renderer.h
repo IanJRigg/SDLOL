@@ -1,28 +1,30 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
+#include <memory>
+
 #include "window.h"
 
 class Renderer
 {
 public:
     Renderer() = delete;
-    Renderer(Renderer& other) = delete;
-    Renderer(Renderer&& other) noexcept = delete;
+    Renderer(Renderer& other) = default;
+    Renderer(Renderer&& other) noexcept = default;
 
-    Renderer& operator=(Renderer& other) = delete;
-    Renderer& operator=(Renderer&& other) noexcept = delete;
+    Renderer& operator=(Renderer& other) = default;
+    Renderer& operator=(Renderer&& other) noexcept = default;
+
+    virtual ~Renderer() = default;
 
     explicit Renderer(const Window& window);
-    virtual ~Renderer();
 
     bool set_draw_color(const SDL_Color& color);
     bool clear_target();
     void render_present();
 
     // Accessors
-    SDL_Renderer* pointer() const;
-    uint32_t options_mask() const;
+    std::shared_ptr<SDL_Renderer> pointer() const;
 
 public:
     static void Enable_VSYNC();
@@ -38,8 +40,7 @@ private:
     static uint32_t Hardware_Acceleration_Flag;
 
 private:
-    SDL_Renderer* m_renderer_pointer;
-    const uint32_t m_options_mask;
+    std::shared_ptr<SDL_Renderer> m_renderer_pointer;
 };
 
 
