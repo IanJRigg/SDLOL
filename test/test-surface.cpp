@@ -46,8 +46,6 @@ TEST_CASE("Surface Single argument pointer constructor")
 
         REQUIRE(copied_surface.height() == original_surface.height());
         REQUIRE(copied_surface.width()  == original_surface.width());
-
-        std::cout << "Finished with the valid pointer test" << std::endl;
     }
 
     SECTION("Construction with nullptr results a dimmensions of 0x0")
