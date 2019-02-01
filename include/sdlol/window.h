@@ -4,34 +4,33 @@
 #include <SDL.h>
 #include <cstdint>
 #include <string>
+#include <memory>
 
 class Window
 {
 public:
     Window() = delete;
-    Window(const Window& other) = delete;
-    Window(const Window&& other) noexcept = delete;
+    Window(const Window& other) = default;
+    Window(Window&& other) noexcept = default;
 
-    Window& operator=(Window& other) = delete;
-    Window& operator=(Window&& other) noexcept = delete;
+    Window& operator=(const Window& other) = default;
+    Window& operator=(Window&& other) noexcept = default;
+
+    virtual ~Window() = default;
 
     Window(const std::string& title, const uint32_t width, const uint32_t height);
-    virtual ~Window();
 
     bool update();
 
     // Accessors
-    SDL_Window* pointer() const;
+    std::shared_ptr<SDL_Window> pointer() const;
 
     std::string title() const;
     uint32_t height() const;
     uint32_t width() const;
 
 private:
-    SDL_Window* m_window_pointer;
-    const std::string m_title;
-    const uint32_t m_width;
-    const uint32_t m_height;
+    std::shared_ptr<SDL_Window> m_window_pointer;
 };
 
 #endif

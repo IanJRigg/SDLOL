@@ -7,7 +7,7 @@ TEST_CASE("Renderer Single Argument Constructor")
 {
     Window window("Test Case!", NINETEEN_TWENTY_PIXELS, ONE_THOUSDAND_EIGHTY_PIXELS);
 
-    SECTION("Renderer can be constructed with a bitmap")
+    SECTION("Renderer can be constructed with no arguments")
     {
         Renderer Renderer(window);
 

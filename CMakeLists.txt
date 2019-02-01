@@ -122,7 +122,7 @@ set(TEST_SOURCE_FILES
     ${TEST_DIR}/test-runner.cpp
     ${TEST_DIR}/test-surface.cpp
     # ${TEST_DIR}/test-texture.cpp
-    # ${TEST_DIR}/test-window.cpp
+    ${TEST_DIR}/test-window.cpp
 )
 
 set(TEST_HEADER_FILES

@@ -12,7 +12,7 @@ Renderer::Renderer(const Window& window) :
 {
     uint32_t options_mask = VSYNC_Flag | Hardware_Acceleration_Flag;
 
-    SDL_Renderer* renderer = SDL_CreateRenderer(window.pointer(),
+    SDL_Renderer* renderer = SDL_CreateRenderer(window.pointer().get(),
                                                 FIRST_SUPPORTED_DRIVER,
                                                 options_mask);
 
