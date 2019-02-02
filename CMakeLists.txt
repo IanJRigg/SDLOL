@@ -117,7 +117,8 @@ set(APPLICATION_NAME SDLOL-test)
 project(${APPLICATION_NAME} VERSION 1.0 LANGUAGES CXX)
 
 set(TEST_SOURCE_FILES
-    # ${TEST_DIR}/test-font.cpp
+    ${TEST_DIR}/test-font.cpp
+    ${TEST_DIR}/test-label.cpp
     ${TEST_DIR}/test-renderer.cpp
     ${TEST_DIR}/test-runner.cpp
     ${TEST_DIR}/test-surface.cpp

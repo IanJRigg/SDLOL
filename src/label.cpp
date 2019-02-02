@@ -8,17 +8,12 @@ Label::Label(Renderer& renderer,
     m_font(font),
     m_color(color)
 {
-    load(text);
+    set_text(text);
 }
 
-Label::~Label()
+void Label::set_text(const std::string& text)
 {
-
-}
-
-void Label::load(const std::string& text)
-{
-    Surface surface(TTF_RenderText_Solid(m_font.pointer(), text.c_str(), m_color));
+    Surface surface(TTF_RenderText_Solid(m_font.pointer().get(), text.c_str(), m_color));
 
     SDL_Color color = { 0x00U, 0xFFU, 0xFFU, 0x00U};
     surface.set_color_key(color);
@@ -31,7 +26,7 @@ void Label::load(const std::string& text)
 //     m_font = font;
 // }
 
-// void Label::set_color(const SDL_Color& color)
-// {
-//     color = color;
-// }
+void Label::set_color(const SDL_Color& color)
+{
+    m_color = color;
+}

@@ -4,25 +4,27 @@
 #include <SDL_ttf.h>
 #include <cstdint>
 #include <string>
+#include <memory>
 
 class Font
 {
 public:
     Font() = delete;
-    Font(const Font& other) = delete;
-    Font(Font&& other) noexcept = delete;
+    Font(const Font& other) = default;
+    Font(Font&& other) noexcept = default;
 
-    Font& operator=(const Font& other) = delete;
-    Font& operator=(Font&& other) noexcept = delete;
+    Font& operator=(const Font& other) = default;
+    Font& operator=(Font&& other) noexcept = default;
+
+    virtual ~Font() = default;
 
     Font(const std::string& location, const uint32_t point_size);
-    virtual ~Font();
 
     // Accessors
-    TTF_Font* pointer() const;
+    std::shared_ptr<TTF_Font> pointer() const;
 
 private:
-    TTF_Font* m_font_pointer;
+    std::shared_ptr<TTF_Font> m_font_pointer;
 };
 
 #endif
