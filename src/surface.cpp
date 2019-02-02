@@ -10,7 +10,7 @@ static const auto DELETER_LAMBDA = [](SDL_Surface* pointer) { SDL_FreeSurface(po
 Surface::Surface(const std::string& path_to_image) :
     m_surface_pointer(nullptr, DELETER_LAMBDA)
 {
-    load_image(path_to_image);
+    this->load_image(path_to_image);
 }
 
 // Don't pass in another surfaces raw pointer via here!!! Else you deserve it

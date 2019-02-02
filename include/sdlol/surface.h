@@ -9,10 +9,10 @@ class Surface
 {
 public:
     Surface() = delete;
-    Surface(Surface& other) = default;
+    Surface(const Surface& other) = default;
     Surface(Surface&& other) noexcept = default;
 
-    Surface& operator=(Surface& other) = default;
+    Surface& operator=(const Surface& other) = default;
     Surface& operator=(Surface&& other) noexcept = default;
 
     virtual ~Surface() = default;

@@ -70,7 +70,7 @@ TEST_CASE("Surface Copy Constructor")
         REQUIRE(first_surface.height() == second_surface.height());
         REQUIRE(first_surface.width()  == second_surface.width());
 
-        // Check for 3 becuase the call to pointer() makes a copy of the shared pointer
+        // Check for 3 becuase to pointer() makes a copy of the shared pointer
         REQUIRE(first_surface.pointer().use_count() == 3UL);
     }
 
@@ -83,7 +83,7 @@ TEST_CASE("Surface Copy Constructor")
             Surface second_surface(first_surface);
         }
 
-        // Check for 2 becuase the call to pointer() makes a copy of the shared pointer
+        // Check for 2 because pointer() makes a copy of the shared pointer
         REQUIRE(first_surface.pointer().use_count() == 2UL);
     }
 }

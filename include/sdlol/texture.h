@@ -1,8 +1,6 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include <SDL.h>
-
 #include "renderer.h"
 #include "surface.h"
 
@@ -10,22 +8,26 @@ class Texture
 {
 public:
     Texture() = delete;
-    Texture(Texture& other) = delete;
-    Texture(Texture&& other) noexcept = delete;
+    Texture(const Texture& other) = default;
+    Texture(Texture&& other) noexcept = default;
 
-    Texture& operator=(Texture& other) = delete;
+    // Deleted because the reference can't be transferred after construction
+    Texture& operator=(const Texture& other) = delete;
     Texture& operator=(Texture&& other) noexcept = delete;
+
+    virtual ~Texture() = default;
 
     Texture(Renderer& renderer, const std::string& path_to_image);
     Texture(Renderer& renderer, const Surface& surface);
-    virtual ~Texture();
 
-    void render_at(const uint32_t x, const uint32_t y) const;
-    void render_at(const uint32_t x, const uint32_t y, const SDL_Rect& sprite) const;
-    // void render_at(const uint32_t x,
-    //                const uint32_t y,
-    //                const double angle = 0.0,
-    //                const SDL_RendererFlip flip = SDL_FLIP_NONE) const;
+    // Rendering functions
+    void render_at(const uint32_t x,
+                   const uint32_t y,
+                   const SDL_Rect& sprite_box) const;
+    void render_at(const uint32_t x,
+                   const uint32_t y,
+                   const double angle = 0.0,
+                   const SDL_RendererFlip flip = SDL_FLIP_NONE) const;
     void render_at(const uint32_t x,
                    const uint32_t y,
                    const SDL_Rect& sprite,
@@ -33,31 +35,32 @@ public:
                    const double angle = 0.0,
                    const SDL_RendererFlip flip = SDL_FLIP_NONE) const;
 
+    // Color modulation
     bool set_color_modulation(const SDL_Color& color) const;
     SDL_Color color_modulation() const;
 
+    // Alpha Modulation
     bool set_alpha_modulation(const uint8_t alpha) const;
     uint8_t alpha_modulation() const;
 
+    // Blend Mode
     void set_blend_mode(const SDL_BlendMode mode);
 
+    // Conversion utilities
     void load_surface(const Surface& surface);
     void load_image(const std::string& path_to_image);
 
-    SDL_Texture* pointer() const;
+    std::shared_ptr<SDL_Texture> pointer() const;
 
     uint32_t height() const;
     uint32_t width() const;
 
 protected:
-    // Primary constructor for all children
+    // Constructor for all children
     explicit Texture(Renderer& renderer);
 
 private:
-    void deallocate();
-
-private:
-    SDL_Texture* m_texture_pointer;
+    std::shared_ptr<SDL_Texture> m_texture_pointer;
 
     Renderer& m_renderer;
 };
