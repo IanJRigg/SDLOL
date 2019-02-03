@@ -4,30 +4,31 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 
-#include "exception.h"
+#include <stdexcept>
+#include <string>
 
 SDL_Controller::SDL_Controller()
 {
     if(SDL_Init(SDL_INIT_VIDEO) != 0L)
     {
-        throw SDLOL_Exception("SDL could not initialize: " + std::string(SDL_GetError()));
+        throw std::runtime_error("SDL could not initialize: " + std::string(SDL_GetError()));
     }
 
     if(SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1") == SDL_FALSE)
     {
-        throw SDLOL_Exception("Unable to enable linear texture filtering.");
+        throw std::runtime_error("Unable to enable linear texture filtering.");
     }
 
     // Initialize PNG loading
     if(IMG_Init(IMG_INIT_PNG) != IMG_INIT_PNG)
     {
-        throw SDLOL_Exception("SDL_image could not initialize: " + std::string(SDL_GetError()));
+        throw std::runtime_error("SDL_image could not initialize: " + std::string(SDL_GetError()));
     }
 
     // Initialize SDL_ttf
-    if( TTF_Init() == -1 )
+    if(TTF_Init() == -1L)
     {
-        throw SDLOL_Exception("SDL_ttf could not initialize: " + std::string(TTF_GetError()));
+        throw std::runtime_error("SDL_ttf could not initialize: " + std::string(TTF_GetError()));
     }
 }
 

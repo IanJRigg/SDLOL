@@ -4,6 +4,8 @@
 #include "texture.h"
 #include "renderer.h"
 
+#include <stdexcept>
+
 TEST_CASE("Texture's Renderer + String Constructor")
 {
     Window window(WINDOW_TITLE, NINETEEN_TWENTY_PIXELS, ONE_THOUSDAND_EIGHTY_PIXELS);
@@ -31,7 +33,7 @@ TEST_CASE("Texture's Renderer + String Constructor")
 
     SECTION("Construction with a bad path results in SDLOL_Exception")
     {
-        REQUIRE_THROWS(Texture(renderer, ""));
+        REQUIRE_THROWS_AS(Texture(renderer, ""), std::runtime_error);
     }
 }
 

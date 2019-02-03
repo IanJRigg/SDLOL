@@ -1,7 +1,7 @@
 #include "surface.h"
-#include "exception.h"
 
 #include <SDL_image.h>
+#include <stdexcept>
 
 #include <iostream>
 
@@ -25,7 +25,7 @@ void Surface::load_image(const std::string& path_to_image)
     SDL_Surface* surface = IMG_Load(path_to_image.c_str());
     if(surface == nullptr)
     {
-        throw new SDLOL_Exception("Unable to find resource at: " + path_to_image);
+        throw std::runtime_error("Unable to find resource at: " + path_to_image);
     }
 
     m_surface_pointer.reset(surface, DELETER_LAMBDA);

@@ -4,6 +4,8 @@
 #include <string>
 #include <cstdint>
 
+static const std::string PATH_TO_INVALID_FILE = "";
+
 static const std::string TEST_BMP_200X200_WHITE = "./test-media/test-200x200-white.bmp";
 static const std::string TEST_PNG_200X200_WHITE = "./test-media/test-200x200-white.png";
 

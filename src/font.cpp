@@ -1,5 +1,6 @@
 #include "font.h"
-#include "exception.h"
+
+#include <stdexcept>
 
 static const auto DELETER_LAMBDA = [](TTF_Font* pointer) { TTF_CloseFont(pointer); };
 
@@ -10,7 +11,7 @@ Font::Font(const std::string& location, const uint32_t point_size) :
 
     if(font == nullptr)
     {
-        throw SDLOL_Exception("Error creating font: " + std::string(TTF_GetError()));
+        throw std::runtime_error("Error creating font: " + std::string(TTF_GetError()));
     }
 
     m_font_pointer.reset(font, DELETER_LAMBDA);

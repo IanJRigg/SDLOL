@@ -1,7 +1,7 @@
-#include <SDL_image.h>
-
 #include "texture.h"
-#include "exception.h"
+
+#include <SDL_image.h>
+#include <stdexcept>
 
 static const auto DELETER_LAMBDA = [](SDL_Texture* pointer) { SDL_DestroyTexture(pointer); };
 
@@ -134,7 +134,7 @@ void Texture::load_surface(const Surface& surface)
                                                         surface.pointer().get());
     if(texture == nullptr)
     {
-        throw SDLOL_Exception("Error creating texture, " + std::string(SDL_GetError()));
+        throw std::runtime_error("Error creating texture, " + std::string(SDL_GetError()));
     }
 
     m_texture_pointer.reset(texture, DELETER_LAMBDA);

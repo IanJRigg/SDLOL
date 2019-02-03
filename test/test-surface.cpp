@@ -2,9 +2,9 @@
 #include "constants.h"
 
 #include "surface.h"
-#include "exception.h"
 
 #include <SDL_image.h>
+#include <stdexcept>
 
 TEST_CASE("Surface Single Argument String Constructor")
 {
@@ -30,7 +30,7 @@ TEST_CASE("Surface Single Argument String Constructor")
 
     SECTION("Construction with a bad path results in a SDLOL Exception")
     {
-        REQUIRE_THROWS(Surface(""));
+        REQUIRE_THROWS_AS(Surface(PATH_TO_INVALID_FILE), std::runtime_error);
     }
 }
 
@@ -165,7 +165,7 @@ TEST_CASE("load_image()")
     SECTION("load_image() throws an exception if the file doesn't exist")
     {
         Surface surface(nullptr);
-        REQUIRE_THROWS(surface.load_image(""));
+        REQUIRE_THROWS_AS(surface.load_image(""), std::runtime_error);
     }
 
     SECTION("load_image() different images will change the dimmensions of the image")

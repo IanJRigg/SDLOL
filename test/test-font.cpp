@@ -4,6 +4,8 @@
 #include "font.h"
 #include "sdl-controller.h"
 
+#include <stdexcept>
+
 SDL_Controller sdl_controller;
 
 TEST_CASE("Font Location + size constructor")
@@ -17,7 +19,7 @@ TEST_CASE("Font Location + size constructor")
 
     SECTION("Construction with a bad path results in a SDLOL Exception")
     {
-        REQUIRE_THROWS(Font("", 0UL));
+        REQUIRE_THROWS_AS(Font("", 0UL), std::runtime_error);
     }
 }
 
