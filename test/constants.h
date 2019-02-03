@@ -16,6 +16,10 @@ static const std::string TEST_FONT = "./test-media/test.ttf";
 
 static const std::string WINDOW_TITLE = "THIS IS A TEST CASE!";
 
+static const std::string ASCII_TEST_STRING = " !\"#$%&\'()*+,-./0123456789:;<=>?"
+                                             "@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_"
+                                             "`abcdefghijklmnopqrstuvwxyz{|}~";
+
 static constexpr uint32_t ZERO_PIXELS = 0UL;
 
 static constexpr uint32_t TWO_HUNDRED_PIXELS = 200UL;

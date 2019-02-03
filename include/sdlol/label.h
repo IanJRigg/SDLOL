@@ -19,8 +19,6 @@ public:
           const SDL_Color& color);
 
     void set_text(const std::string& text);
-
-    void set_font(Font& font);
     void set_color(const SDL_Color& color);
 
 private:
