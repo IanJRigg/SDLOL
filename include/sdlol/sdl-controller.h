@@ -7,7 +7,7 @@ public:
     SDL_Controller();
     SDL_Controller(SDL_Controller& other) = delete;
     SDL_Controller(SDL_Controller&& other) = delete;
-    ~SDL_Controller();
+    virtual ~SDL_Controller();
 
     SDL_Controller& operator=(SDL_Controller& other) = delete;
     SDL_Controller& operator=(SDL_Controller&& other) = delete;

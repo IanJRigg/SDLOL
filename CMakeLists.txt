@@ -25,6 +25,7 @@ set(SOURCE_FILES
     ${SRC_DIR}/sdl-controller.cpp
     ${SRC_DIR}/surface.cpp
     ${SRC_DIR}/texture.cpp
+    ${SRC_DIR}/timer.cpp
     ${SRC_DIR}/window.cpp
 )
 
@@ -36,6 +37,7 @@ set(HEADER_FILES
     ${SDLOL_INCLUDE_DIR}/sdl-controller.h
     ${SDLOL_INCLUDE_DIR}/surface.h
     ${SDLOL_INCLUDE_DIR}/texture.h
+    ${SDLOL_INCLUDE_DIR}/timer.h
     ${SDLOL_INCLUDE_DIR}/window.h
 )
 
@@ -122,6 +124,7 @@ set(TEST_SOURCE_FILES
     ${TEST_DIR}/test-runner.cpp
     ${TEST_DIR}/test-surface.cpp
     ${TEST_DIR}/test-texture.cpp
+    ${TEST_DIR}/test-timer.cpp
     ${TEST_DIR}/test-window.cpp
 )
 
