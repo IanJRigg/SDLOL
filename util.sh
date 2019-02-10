@@ -1,23 +1,21 @@
 #! /bin/bash
 
-if [ "$1" = "-c" ]
+if [ "$1" = "--generate" ]
 then
     rm -rf ./build/
     mkdir build
     cd build
     cmake ..
-    make -j8
-    cp -R ../test/test-media/ ./test-media
-elif [ "$1" = "-m" ]
-then
-    cd build
-    make -j8
-    cp -R ../test/test-media/ ./test-media
-elif [ "$1" = "-i" ]
+elif [ "$1" = "--install" ]
 then
     cd build
     make install
-elif [ "$1" = "-t" ]
+elif [ "$1" = "--make" ]
+then
+    cd build
+    make -j8
+    cp -R ../test/test-media/ ./test-media
+elif [ "$1" = "--test" ]
 then
     cd build
     ./SDLOL-test
