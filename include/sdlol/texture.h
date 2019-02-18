@@ -23,11 +23,18 @@ public:
     // Rendering functions
     void render_at(const uint32_t x,
                    const uint32_t y,
-                   const SDL_Rect& sprite_box) const;
+                   const SDL_Rect& source_box) const;
+
+    void render_at(const uint32_t x,
+                   const uint32_t y,
+                   const SDL_Rect& source_box,
+                   const SDL_Rect& destination_box) const;
+
     void render_at(const uint32_t x,
                    const uint32_t y,
                    const double angle = 0.0,
                    const SDL_RendererFlip flip = SDL_FLIP_NONE) const;
+
     void render_at(const uint32_t x,
                    const uint32_t y,
                    const SDL_Rect& sprite,
@@ -44,7 +51,8 @@ public:
     uint8_t alpha_modulation() const;
 
     // Blend Mode
-    void set_blend_mode(const SDL_BlendMode mode);
+    bool set_blend_mode(const SDL_BlendMode mode);
+    SDL_BlendMode blend_mode() const;
 
     // Conversion utilities
     void load_surface(const Surface& surface);
