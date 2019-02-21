@@ -11,7 +11,6 @@ SDLOL is intended to be a cross platform API for SDL, written for use in  C++.
 5. Need to add a scene object class
 6. Need to add a scene graph class
 7. Need to find out if scaling textures is possible, and if it requires an alternative library to accomplish it.
-8. Look into importing GLm for math functions
 
 ## Issues:
 1. A bad path to the Texture constructor does nothing right now. Should be an exception.
