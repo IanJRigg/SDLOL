@@ -1,7 +1,7 @@
 #include "catch.hpp"
 #include "constants.h"
 
-#include "renderer.h"
+#include "sdlol/renderer.h"
 
 TEST_CASE("Renderer Single Argument Constructor")
 {

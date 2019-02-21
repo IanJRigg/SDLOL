@@ -1,7 +1,7 @@
 #include "catch.hpp"
 #include "constants.h"
 
-#include "label.h"
+#include "sdlol/label.h"
 
 TEST_CASE("Label's Renderer + Font + String + Color constructor")
 {

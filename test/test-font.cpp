@@ -1,20 +1,23 @@
 #include "catch.hpp"
 #include "constants.h"
 
-#include "font.h"
-#include "sdl-controller.h"
+#include "sdlol/font.h"
+#include "sdlol/utils.h"
 
 #include <stdexcept>
 
-SDL_Controller sdl_controller;
 
 TEST_CASE("Font Location + size constructor")
 {
     SECTION("Font's default constructor creates a font pointer")
     {
+        INITIALIZE_SDL();
+
         Font font(TEST_FONT, 32UL);
 
         REQUIRE(font.pointer() != nullptr);
+
+        TEAR_DOWN_SDL();
     }
 
     SECTION("Construction with a bad path results in a SDLOL Exception")

@@ -1,7 +1,7 @@
 #include "catch.hpp"
 #include "constants.h"
 
-#include "window.h"
+#include "sdlol/window.h"
 
 TEST_CASE("Window Single Argument Constructor")
 {

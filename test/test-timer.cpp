@@ -1,6 +1,6 @@
 #include "catch.hpp"
 
-#include "timer.h"
+#include "sdlol/timer.h"
 
 #include <unistd.h>
 

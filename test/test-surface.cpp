@@ -1,7 +1,7 @@
 #include "catch.hpp"
 #include "constants.h"
 
-#include "surface.h"
+#include "sdlol/surface.h"
 
 #include <SDL_image.h>
 #include <stdexcept>

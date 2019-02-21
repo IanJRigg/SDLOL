@@ -1,8 +1,8 @@
 #include "catch.hpp"
 #include "constants.h"
 
-#include "texture.h"
-#include "renderer.h"
+#include "sdlol/texture.h"
+#include "sdlol/renderer.h"
 
 #include <stdexcept>
 

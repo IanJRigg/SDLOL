@@ -22,7 +22,6 @@ set(SOURCE_FILES
     ${SRC_DIR}/font.cpp
     ${SRC_DIR}/label.cpp
     ${SRC_DIR}/renderer.cpp
-    ${SRC_DIR}/sdl-controller.cpp
     ${SRC_DIR}/surface.cpp
     ${SRC_DIR}/texture.cpp
     ${SRC_DIR}/timer.cpp
@@ -30,11 +29,11 @@ set(SOURCE_FILES
 )
 
 set(HEADER_FILES
+    ${SDLOL_INCLUDE_DIR}/event-controller.h
     ${SDLOL_INCLUDE_DIR}/font.h
-    ${SDLOL_INCLUDE_DIR}/input.h
+    ${SDLOL_INCLUDE_DIR}/utils.h
     ${SDLOL_INCLUDE_DIR}/label.h
     ${SDLOL_INCLUDE_DIR}/renderer.h
-    ${SDLOL_INCLUDE_DIR}/sdl-controller.h
     ${SDLOL_INCLUDE_DIR}/surface.h
     ${SDLOL_INCLUDE_DIR}/texture.h
     ${SDLOL_INCLUDE_DIR}/timer.h
@@ -153,7 +152,7 @@ target_include_directories(
         ${SDL2_INCLUDE_DIRS}
         ${SDL2_IMAGE_INCLUDE_DIRS}
         ${SDL2_TTF_INCLUDE_DIRS}
-        ${SDLOL_INCLUDE_DIR}
+        ${INCLUDE_DIR}
 )
 
 target_link_libraries(
