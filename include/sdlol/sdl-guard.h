@@ -1,16 +1,16 @@
-#ifndef SDL_CONTROLLER_H
-#define SDL_CONTROLLER_H
+#ifndef SDL_GUARD_H
+#define SDL_GUARD_H
 
-class SDL_Controller final
+class SDL_Guard final
 {
 public:
-    SDL_Controller();
-    SDL_Controller(SDL_Controller& other) = delete;
-    SDL_Controller(SDL_Controller&& other) = delete;
-    virtual ~SDL_Controller();
+    SDL_Guard();
+    SDL_Guard(SDL_Guard& other) = delete;
+    SDL_Guard(SDL_Guard&& other) = delete;
+    virtual ~SDL_Guard();
 
-    SDL_Controller& operator=(SDL_Controller& other) = delete;
-    SDL_Controller& operator=(SDL_Controller&& other) = delete;
+    SDL_Guard& operator=(SDL_Guard& other) = delete;
+    SDL_Guard& operator=(SDL_Guard&& other) = delete;
 };
 
 #endif
